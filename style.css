@@ -10,11 +10,9 @@
     background: #e4c071;
     opacity: 1;
     -webkit-box-sizing: border-box;
-    /* Safari/Chrome, other WebKit */
     -moz-box-sizing: border-box;
-    /* Firefox, other Gecko */
     box-sizing: border-box;
-    /* Opera/IE 8+ */
+    cursor: pointer;
 }
 
 .tile.played {
@@ -78,4 +76,27 @@
     width: 7.14285714%;
     border-bottom: 1px solid #ccc;
     border-right: 1px solid #ccc;
+}
+
+/* footer */
+
+.footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer .button {
+    width: 180px;
+    padding: 20px;
+    background: #6e0404;
+    color: #FFF;
+    font-size: 20px;
+    border-radius: 10px;
+    margin: 20px;
+    text-align: center;
+}
+
+.footer .button .roll {
+    cursor: pointer;
 }

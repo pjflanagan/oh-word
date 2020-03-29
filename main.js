@@ -116,10 +116,10 @@ const makeTiles = function (rollString) {
 // returns a default grid
 const makeDefaultGrid = function () {
 	const grid = [];
-	for (let i = 0; i < 14; i++) {
+	for (let row = 0; row < 14; row++) {
 		grid.push([])
-		for (let j = 0; j < 14; j++) {
-			grid[i].push(new Tile({ row: i, col: j }));
+		for (let col = 0; col < 14; col++) {
+			grid[row].push(new Tile({ row, col }));
 		}
 	}
 	return grid;
@@ -132,28 +132,23 @@ angular.module('cwc', []).controller('play', ['$scope', '$location', function ($
 	$scope.tiles = [];
 	$scope.selectedTile = -1;
 
-	// ------------------------------------------------------------------------- INIT
-
 	$scope.init = function () {
-		const { r } = $location.search();
-		console.log(r);
-		if (!r || r === '') {
+		const rollString = $location.hash();
+		if (!rollString || rollString === '') {
 			$scope.newRoll();
 		} else {
-			$scope.tiles = makeTiles(r);
+			$scope.tiles = makeTiles(rollString);
 		}
 	}
 
 	$scope.newRoll = function () {
 		const rollString = makeRollString();
-		$location.search('r', rollString);
+		$location.hash(rollString);
 		$scope.tiles = makeTiles(rollString); // set the tiles to the new roll
 		$scope.grid = makeDefaultGrid(); // reset the grid
 	}
 
 	$scope.selectHeaderTile = function (tile) {
-		console.log(tile);
-
 		const { row, col } = tile;
 		if (tile.isInPlay()) {
 			// if this tile is placed, then call it back and set it as selected
@@ -168,7 +163,6 @@ angular.module('cwc', []).controller('play', ['$scope', '$location', function ($
 	}
 
 	$scope.selectGridTile = function (tile) {
-		console.log($scope.selectedTile);
 		const { row, col } = tile;
 		if (tile.index !== -1) {
 			// if there is a tile here -> remove it and set it as selected tile
@@ -189,9 +183,32 @@ angular.module('cwc', []).controller('play', ['$scope', '$location', function ($
 
 	$scope.score = function () {
 		let score = 0;
-		// if it borders nothing subtract it from the score
-		// if it borders something left/right and up/dow then multiply by two and add it
-		// if it borders something in just one direction then add it
+		const grid = $scope.grid;
+		$scope.tiles.forEach(tile => {
+			if (tile.row === -1 || tile.col === -1) {
+				// if it hasn't been played then subtract it
+				score -= tile.value;
+				return;
+			}
+
+			const up = (tile.row > 0 && grid[tile.row - 1][tile.col].index !== -1) ? true : false;
+			const down = (tile.row < 13 && grid[tile.row + 1][tile.col].index !== -1) ? true : false;
+			const left = (tile.col > 0 && grid[tile.row][tile.col - 1].index !== -1) ? true : false;
+			const right = (tile.col < 13 && grid[tile.row][tile.col + 1].index !== -1) ? true : false;
+
+			if (left || right) {
+				score += tile.value;
+			}
+			if (up || down) {
+				score += tile.value;
+			}
+			if (!up && !down && !left && !right) {
+				// if next to nothing
+				score -= tile.value;
+			}
+		});
+
+		return score;
 	}
 
 }]);
