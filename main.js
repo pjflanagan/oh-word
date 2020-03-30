@@ -55,8 +55,8 @@ class Tile {
 		this.index = (index === undefined) ? -1 : index; // index in roll, -1 means not set (empty grid spot)
 		this.character = (!!character) ? character : ''; // a character object with letter and value
 		this.value = getValue(character);
-		this.row = (row === undefined) ? -1 : row;
-		this.col = (col === undefined) ? -1 : col;
+		this.place({ row, col });
+		this.angle = (Math.random() * 6) - 3;
 	}
 
 	isInPlay() {
@@ -75,6 +75,16 @@ class Tile {
 			return '';
 		}
 		return this.value;
+	}
+
+	unplace() {
+		this.row = -1;
+		this.col = -1;
+	}
+
+	place({ row, col }) {
+		this.row = (row === undefined) ? -1 : row;
+		this.col = (col === undefined) ? -1 : col;
 	}
 }
 
@@ -125,6 +135,23 @@ const makeDefaultGrid = function () {
 	return grid;
 }
 
+const makeRandomGrid = function (tiles) {
+	const grid = makeDefaultGrid();
+	tiles.forEach(tile => {
+		let placed = false;
+		while (!placed) {
+			const row = Math.floor(Math.random() * 14);
+			const col = Math.floor(Math.random() * 14);
+			if (grid[row][col].index === -1) {
+				grid[row][col] = tile;
+				tile.place({ row, col });
+				placed = true;
+			}
+		}
+	});
+	return grid;
+}
+
 // ----------------------------------------------------------------------------- ANGULAR
 
 angular.module('cwc', []).controller('play', ['$scope', '$location', function ($scope, $location) {
@@ -138,6 +165,7 @@ angular.module('cwc', []).controller('play', ['$scope', '$location', function ($
 			$scope.newRoll();
 		} else {
 			$scope.tiles = makeTiles(rollString);
+			$scope.grid = makeRandomGrid($scope.tiles); // reset the grid
 		}
 	}
 
@@ -145,7 +173,7 @@ angular.module('cwc', []).controller('play', ['$scope', '$location', function ($
 		const rollString = makeRollString();
 		$location.hash(rollString);
 		$scope.tiles = makeTiles(rollString); // set the tiles to the new roll
-		$scope.grid = makeDefaultGrid(); // reset the grid
+		$scope.grid = makeRandomGrid($scope.tiles); // reset the grid
 	}
 
 	$scope.selectHeaderTile = function (tile) {
@@ -153,8 +181,7 @@ angular.module('cwc', []).controller('play', ['$scope', '$location', function ($
 		if (tile.isInPlay()) {
 			// if this tile is placed, then call it back and set it as selected
 			$scope.grid[row][col] = new Tile({ row, col });
-			tile.row = -1;
-			tile.col = -1;
+			tile.unplace();
 			$scope.selectedTile = tile;
 		} else {
 			// if this tile is not placed set the selected tile
@@ -167,14 +194,12 @@ angular.module('cwc', []).controller('play', ['$scope', '$location', function ($
 		if (tile.index !== -1) {
 			// if there is a tile here -> remove it and set it as selected tile
 			$scope.grid[row][col] = new Tile({ row, col });
-			tile.row = -1;
-			tile.col = -1;
+			tile.unplace();
 			$scope.selectedTile = tile;
 		} else if ($scope.selectedTile !== -1) {
 			// if there is no tile here and there is a selected tile -> place that tile here
 			$scope.grid[row][col] = $scope.selectedTile;
-			$scope.selectedTile.row = row;
-			$scope.selectedTile.col = col;
+			$scope.selectedTile.place({ row, col });
 			// unselect this tile
 			$scope.selectedTile = -1;
 		}
@@ -211,4 +236,19 @@ angular.module('cwc', []).controller('play', ['$scope', '$location', function ($
 		return score;
 	}
 
+	$scope.displayScore = function () {
+		const score = $scope.score();
+		return (score < 0) ? 0 : score;
+	}
+
 }]);
+
+
+// const getLargestCluser = function() {
+// 	const indicies = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 ];
+// 	// for each character
+// };
+
+// const getLargestCluserSub = function() {
+
+// };
