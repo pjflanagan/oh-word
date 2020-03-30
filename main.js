@@ -241,6 +241,21 @@ angular.module('cwc', []).controller('play', ['$scope', '$location', function ($
 		return (score < 0) ? 0 : score;
 	}
 
+	$scope.styleGridTile = function (tile) {
+		let className = '';
+		if (tile.index === -1) {
+			className += 'empty ';
+			// we have selected a tile and can place it on a square
+			if ($scope.selectedTile !== -1) {
+				className += 'selectable ';
+			}
+			return className;
+		}
+		if (tile.index !== -1) {
+			return 'selectable';
+		}
+	}
+
 }]);
 
 
