@@ -24,7 +24,7 @@
 		<div class="grid">
 			<div class="row" ng-repeat="row in grid">
 				<div class="col" ng-repeat="tile in row">
-					<div class="tile" ng-class="tile.index === -1 ? 'empty' : ''" ng-click="selectGridTile(tile)">
+					<div class="tile" ng-class="styleGridTile(tile)" ng-click="selectGridTile(tile)">
 						<div class="character">{{ tile.displayCharacter() }}</div>
 						<div class="value">{{ tile.displayValue() }}</div>
 					</div>

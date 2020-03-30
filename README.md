@@ -7,3 +7,4 @@ TODO:
 - [x] have them randomly on the page, move dock to the bottom
 - [ ] fix all the hashtags and eclamation points in path
 - [ ] cute animations, make tiles rotated slightly
+- [ ] hover effect on tiles, no cursor / effect on empty squares
