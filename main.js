@@ -227,6 +227,12 @@ angular.module('cwc', []).controller('play', ['$scope', '$location', function ($
 			cluster.forEach(tileIdx => {
 				const tile = $scope.tiles[tileIdx];
 
+				if (tile.row === -1 || tile.col === -1) {
+					// if this tile is not on the board then don't look for its neighbors
+					score += tile.value;
+					return;
+				}
+
 				const up = (tile.row > 0 && grid[tile.row - 1][tile.col].index !== -1) ? true : false;
 				const down = (tile.row < 13 && grid[tile.row + 1][tile.col].index !== -1) ? true : false;
 				const left = (tile.col > 0 && grid[tile.row][tile.col - 1].index !== -1) ? true : false;
