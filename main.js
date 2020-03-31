@@ -217,47 +217,39 @@ angular.module('cwc', []).controller('play', ['$scope', '$location', function ($
 	}
 
 	$scope.score = function () {
-		const clusters = makeClusters($scope.grid, $scope.tiles);
+		const largestCluster = getLargestCluster($scope.grid, $scope.tiles);
 		const grid = $scope.grid;
-		let scoreOfOthers = 0;
-		let scoreOfLargest = 0;
-		let largestClusterSize = 0;
-		clusters.forEach(cluster => {
-			let score = 0;
-			cluster.forEach(tileIdx => {
-				const tile = $scope.tiles[tileIdx];
-
+		let scoreLargestCluster = 0;
+		let scoreOthers = 0;
+		$scope.tiles.forEach(tile => {
+			if (largestCluster.includes(tile.index)) {
+				// if this is in the largest cluster then determine how much it is worth
 				if (tile.row === -1 || tile.col === -1) {
 					// if this tile is not on the board then don't look for its neighbors
-					score += tile.value;
 					return;
 				}
 
+				// get the tiles around it
 				const up = (tile.row > 0 && grid[tile.row - 1][tile.col].index !== -1) ? true : false;
 				const down = (tile.row < 13 && grid[tile.row + 1][tile.col].index !== -1) ? true : false;
 				const left = (tile.col > 0 && grid[tile.row][tile.col - 1].index !== -1) ? true : false;
 				const right = (tile.col < 13 && grid[tile.row][tile.col + 1].index !== -1) ? true : false;
 
+				// if it is in a up down word, add it's score
 				if (up || down) {
-					score += tile.value;
+					scoreLargestCluster += tile.value;
 				}
 
+				// if it is in a right left word, add it's score too
 				if (right || left) {
-					score += tile.value;
+					scoreLargestCluster += tile.value;
 				}
-
-			});
-
-			// if this cluster's size is largest cluster size
-			if (cluster.length > largestClusterSize) {
-				largestClusterSize = cluster.length; // this is the new largest cluster size
-				scoreOfOthers += scoreOfLargest; // add the old largest score to the score of the others
-				scoreOfLargest = score; // the new largest score is this one
 			} else {
-				scoreOfOthers += score; // if this is not bigger than the largest, add the score to the score of the others
+				// if it isn't in the largest cluster then add it's score to the others
+				scoreOthers += tile.value;
 			}
 		});
-		return scoreOfLargest - scoreOfOthers;
+		return scoreLargestCluster - scoreOthers;
 	}
 
 	$scope.displayScore = function () {
@@ -281,6 +273,17 @@ angular.module('cwc', []).controller('play', ['$scope', '$location', function ($
 	}
 
 }]);
+
+const getLargestCluster = function (grid, tiles) {
+	const clusters = makeClusters(grid, tiles);
+	let largestCluster = [];
+	clusters.forEach(cluster => {
+		if (cluster.length > largestCluster.length) {
+			largestCluster = cluster;
+		}
+	});
+	return largestCluster;
+}
 
 const makeClusters = function (grid, tiles) {
 	let untrackedTiles = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
