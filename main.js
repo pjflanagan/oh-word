@@ -218,13 +218,28 @@ angular.module('cwc', []).controller('play', ['$scope', '$location', function ($
 
 	$scope.score = function () {
 		const clusters = makeClusters($scope.grid, $scope.tiles);
+		const grid = $scope.grid;
 		let scoreOfOthers = 0;
 		let scoreOfLargest = 0;
 		let largestClusterSize = 0;
 		clusters.forEach(cluster => {
 			let score = 0;
 			cluster.forEach(tileIdx => {
-				score += $scope.tiles[tileIdx].value;
+				const tile = $scope.tiles[tileIdx];
+
+				const up = (tile.row > 0 && grid[tile.row - 1][tile.col].index !== -1) ? true : false;
+				const down = (tile.row < 13 && grid[tile.row + 1][tile.col].index !== -1) ? true : false;
+				const left = (tile.col > 0 && grid[tile.row][tile.col - 1].index !== -1) ? true : false;
+				const right = (tile.col < 13 && grid[tile.row][tile.col + 1].index !== -1) ? true : false;
+
+				if (up || down) {
+					score += tile.value;
+				}
+
+				if (right || left) {
+					score += tile.value;
+				}
+
 			});
 
 			// if this cluster's size is largest cluster size
