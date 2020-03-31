@@ -85,6 +85,11 @@ class Tile {
 	place({ row, col }) {
 		this.row = (row === undefined) ? -1 : row;
 		this.col = (col === undefined) ? -1 : col;
+
+		if (this.index >= 0) {
+			const deg = Math.random() * 6 - 3;
+			this.style = { transform: `rotate(${deg}deg)` };
+		} else this.style = '';
 	}
 }
 
@@ -154,6 +159,11 @@ const makeRandomGrid = function (tiles) {
 
 // ----------------------------------------------------------------------------- ANGULAR
 
+angular.module('cwc', []).config(['$locationProvider', function ($locationProvider) {
+	$locationProvider.html5Mode(true);
+	$locationProvider.hashPrefix('');
+}]);
+
 angular.module('cwc', []).controller('play', ['$scope', '$location', function ($scope, $location) {
 	$scope.grid = makeDefaultGrid();
 	$scope.tiles = [];
@@ -207,33 +217,26 @@ angular.module('cwc', []).controller('play', ['$scope', '$location', function ($
 	}
 
 	$scope.score = function () {
-		let score = 0;
-		const grid = $scope.grid;
-		$scope.tiles.forEach(tile => {
-			if (tile.row === -1 || tile.col === -1) {
-				// if it hasn't been played then subtract it
-				score -= tile.value;
-				return;
-			}
+		const clusters = makeClusters($scope.grid, $scope.tiles);
+		let scoreOfOthers = 0;
+		let scoreOfLargest = 0;
+		let largestClusterSize = 0;
+		clusters.forEach(cluster => {
+			let score = 0;
+			cluster.forEach(tileIdx => {
+				score += $scope.tiles[tileIdx].value;
+			});
 
-			const up = (tile.row > 0 && grid[tile.row - 1][tile.col].index !== -1) ? true : false;
-			const down = (tile.row < 13 && grid[tile.row + 1][tile.col].index !== -1) ? true : false;
-			const left = (tile.col > 0 && grid[tile.row][tile.col - 1].index !== -1) ? true : false;
-			const right = (tile.col < 13 && grid[tile.row][tile.col + 1].index !== -1) ? true : false;
-
-			if (left || right) {
-				score += tile.value;
-			}
-			if (up || down) {
-				score += tile.value;
-			}
-			if (!up && !down && !left && !right) {
-				// if next to nothing
-				score -= tile.value;
+			// if this cluster's size is largest cluster size
+			if (cluster.length > largestClusterSize) {
+				largestClusterSize = cluster.length; // this is the new largest cluster size
+				scoreOfOthers += scoreOfLargest; // add the old largest score to the score of the others
+				scoreOfLargest = score; // the new largest score is this one
+			} else {
+				scoreOfOthers += score; // if this is not bigger than the largest, add the score to the score of the others
 			}
 		});
-
-		return score;
+		return scoreOfLargest - scoreOfOthers;
 	}
 
 	$scope.displayScore = function () {
@@ -258,12 +261,55 @@ angular.module('cwc', []).controller('play', ['$scope', '$location', function ($
 
 }]);
 
+const makeClusters = function (grid, tiles) {
+	let untrackedTiles = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+	const clusters = [];
+	while (untrackedTiles.length > 0) {
+		const tile = tiles[untrackedTiles[0]];
+		if (tile.row === -1 || tile.col === -1) {
+			// if it hasn't been played then it can be considered an individual cluster
+			clusters.push([tile.index]);
+			untrackedTiles.shift()
+		} else {
+			// otherwise it is on the board, so try and make a cluster from it
+			let cluster = makeCluster(grid, tile, []);
+			cluster = Array.from(new Set(cluster));
+			clusters.push(cluster);
+			untrackedTiles = untrackedTiles.filter(index => !cluster.includes(index));
+		}
+	}
+	return clusters;
+}
 
-// const getLargestCluser = function() {
-// 	const indicies = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 ];
-// 	// for each character
-// };
+const makeCluster = function (grid, tile, cluster) {
+	// if there is no index, then this is not a tile
+	if (tile.index === -1 || tile.character === '') {
+		return [];
+	}
 
-// const getLargestCluserSub = function() {
+	// add this index to the cluster
+	cluster.push(tile.index);
 
-// };
+	// get the surrounding tiles
+	const up = (tile.row > 0) ? grid[tile.row - 1][tile.col] : { index: -1 };
+	const down = (tile.row < 13) ? grid[tile.row + 1][tile.col] : { index: -1 };
+	const left = (tile.col > 0) ? grid[tile.row][tile.col - 1] : { index: -1 };
+	const right = (tile.col < 13) ? grid[tile.row][tile.col + 1] : { index: -1 };
+
+	// add the sub clusters to this cluster if they are not already
+	if (!cluster.includes(up.index)) {
+		cluster.concat(makeCluster(grid, up, cluster));
+	}
+	if (!cluster.includes(down.index)) {
+		cluster.concat(makeCluster(grid, down, cluster));
+	}
+	if (!cluster.includes(left.index)) {
+		cluster.concat(makeCluster(grid, left, cluster));
+	}
+	if (!cluster.includes(right.index)) {
+		cluster.concat(makeCluster(grid, right, cluster));
+	}
+
+	return cluster;
+}
+

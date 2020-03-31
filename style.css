@@ -64,7 +64,7 @@ html {
 .tile .value {
     width: 100%;
     text-align: right;
-    margin: -10px -4px;
+    margin: -6px -4px;
 }
 
 .grid .tile .value {
@@ -84,12 +84,21 @@ html {
 }
 
 /* grid */
+
+.grid-holder {
+    width: 616px;
+    height: 616px;
+    padding: 8px;
+    margin: 0 auto;
+    background: #cc88370d;
+}
+
 .grid {
     width: 600px;
     height: 600px;
     margin: 8px auto;
-    border-left: 1px solid #ccc;
-    border-top: 1px solid #ccc;
+    /* border-left: 1px solid #ccc;
+	border-top: 1px solid #ccc; */
 }
 
 .grid .row {
@@ -99,8 +108,8 @@ html {
 
 .grid .row .col {
     width: 7.14285714%;
-    border-bottom: 1px solid #ccc;
-    border-right: 1px solid #ccc;
+    /* border-bottom: 1px solid #ccc;
+    border-right: 1px solid #ccc; */
     padding: 2px;
 }
 
