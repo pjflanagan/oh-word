@@ -1,8 +1,9 @@
 TODO:
-- [ ] share button (share config, share roll) - start using search instead of hash
-- [ ] mobile sizing - get rid of dock completley (replace instead of place)
+- [x] share button (share config, share roll)
+- [ ] popup when you click the share button
+- [ ] mobile sizing - get rid of dock completley and only show the tile that is currently placeable (replace instead of place, should work for all tiles, even blank ones)
 - [ ] social media share card with logo
-- [ ] fix all the hashtags and exclamation points in path - start using search instead of hash
+- [ ] fix all the hashtags and exclamation points in path
 - [ ] hover effect on tiles (animation that rotates them a little and makes them bigger)
 - [x] no cursor on empty squares, hover instead
 - [x] detect islands and don't reward points: only reward points for the largest island, subtract points for the others
@@ -14,15 +15,3 @@ TODO:
 ```
 python -m SimpleHTTPServer 8000 
 ```
-
-On load:
-
-a) Get the roll from r and add that to the roll
-?r=ZLFEOAPEMIAAEI
-
-b) Get the arrangement from a, use that to make the tile and grid
-?a=[{c:A,r:4,c:8}, ...]
-
-(both r and a should be present in the URL)
-
-c) random new roll, and arrangement
