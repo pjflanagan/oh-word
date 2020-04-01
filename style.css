@@ -38,7 +38,8 @@ html {
 }
 
 .tile.selected {
-    box-shadow: 0px 2px 8px #0008;
+    transform: scale(1.2) !important;
+    box-shadow: 0px 1px 6px #0003;
 }
 
 .tile.selectable {
@@ -47,6 +48,13 @@ html {
 
 .tile.empty.selectable:hover {
     background: #0002;
+}
+
+.tile.real.selectable:hover {
+    transform: scale(1.2) !important;
+    box-shadow: 0px 1px 6px #0003;
+    z-index: 10;
+    position: relative;
 }
 
 .tile .character {
@@ -147,7 +155,7 @@ html {
     text-align: center;
 }
 
-.actions .button.roll {
+.actions .button.clickable {
     cursor: pointer;
     -webkit-user-select: none;
     -moz-user-select: none;

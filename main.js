@@ -140,6 +140,16 @@ const makeDefaultGrid = function () {
 	return grid;
 }
 
+const makeGridFromTiles = function (tiles) {
+	const grid = makeDefaultGrid();
+	tiles.forEach(tile => {
+		const { row, col } = tile;
+		grid[row][col] = tile;
+		tile.place({ row, col });
+	});
+	return grid;
+};
+
 const makeRandomGrid = function (tiles) {
 	const grid = makeDefaultGrid();
 	tiles.forEach(tile => {
@@ -157,11 +167,36 @@ const makeRandomGrid = function (tiles) {
 	return grid;
 }
 
+function pad(num) {
+	var s = "0" + num;
+	return s.substr(s.length - 2);
+}
+
+const makeURLParams = function (mode, tiles) {
+	return JSON.stringify(
+		tiles.map(tile => {
+			const row = (mode === 'ROLL') ? -1 : pad(tile.row);
+			const col = (mode === 'ROLL') ? -1 : pad(tile.col);
+			return `${tile.character}${row}${col}`;
+		})
+	);
+};
+
+const makeTilesFromURL = function (tiles) {
+	const newTiles = [];
+	JSON.parse(tiles).forEach((tile, i) => {
+		const character = tile[0];
+		const row = parseInt(tile[1] + tile[2]);
+		const col = parseInt(tile[3] + tile[4]);
+		newTiles.push(new Tile({ index: i, character, row, col }));
+	});
+	return newTiles;
+};
+
 // ----------------------------------------------------------------------------- ANGULAR
 
 angular.module('cwc', []).config(['$locationProvider', function ($locationProvider) {
 	$locationProvider.html5Mode(true);
-	$locationProvider.hashPrefix('');
 }]);
 
 angular.module('cwc', []).controller('play', ['$scope', '$location', function ($scope, $location) {
@@ -170,29 +205,42 @@ angular.module('cwc', []).controller('play', ['$scope', '$location', function ($
 	$scope.selectedTile = -1;
 
 	$scope.init = function () {
-		const rollString = $location.hash();
-		if (!rollString || rollString === '') {
+		// if there are no tiles then don't place them
+		// if there are tiles, then place them as they say
+		const { tiles, mode } = $location.search();
+		// TODO: if the mode is random, run random grid, otherwise leave them as is
+		if (!tiles || tiles.length === 0) {
 			$scope.newRoll();
 		} else {
-			$scope.tiles = makeTiles(rollString);
-			$scope.grid = makeRandomGrid($scope.tiles); // reset the grid
+			$scope.tiles = makeTilesFromURL(tiles);
+			if (mode === 'SCORE') {
+				$scope.grid = makeGridFromTiles($scope.tiles);
+			} else {
+				$scope.grid = makeRandomGrid($scope.tiles); // reset the grid
+			}
 		}
 	}
 
 	$scope.newRoll = function () {
 		const rollString = makeRollString();
-		$location.hash(rollString);
 		$scope.tiles = makeTiles(rollString); // set the tiles to the new roll
 		$scope.grid = makeRandomGrid($scope.tiles); // reset the grid
+
+		$scope.makeURLParams();
+	}
+
+	$scope.makeURLParams = async function (mode = 'SCORE') {
+		$location.search({
+			tiles: makeURLParams(mode, $scope.tiles),
+			mode
+		});
 	}
 
 	$scope.selectHeaderTile = function (tile) {
 		const { row, col } = tile;
 		if (tile.isInPlay()) {
 			// if this tile is placed, then call it back and set it as selected
-			$scope.grid[row][col] = new Tile({ row, col });
-			tile.unplace();
-			$scope.selectedTile = tile;
+			$scope.unplace({ tile, row, col })
 		} else {
 			// if this tile is not placed set the selected tile
 			$scope.selectedTile = tile;
@@ -203,17 +251,29 @@ angular.module('cwc', []).controller('play', ['$scope', '$location', function ($
 		const { row, col } = tile;
 		if (tile.index !== -1) {
 			// if there is a tile here -> remove it and set it as selected tile
-			$scope.grid[row][col] = new Tile({ row, col });
-			tile.unplace();
-			$scope.selectedTile = tile;
+			$scope.unplace({ tile, row, col });
 		} else if ($scope.selectedTile !== -1) {
 			// if there is no tile here and there is a selected tile -> place that tile here
-			$scope.grid[row][col] = $scope.selectedTile;
-			$scope.selectedTile.place({ row, col });
-			// unselect this tile
-			$scope.selectedTile = -1;
+			$scope.place({ row, col });
 		}
 		// otherwise do nothing
+	}
+
+	$scope.place = function ({ row, col }) {
+		$scope.grid[row][col] = $scope.selectedTile;
+		$scope.selectedTile.place({ row, col });
+		// unselect this tile
+		$scope.selectedTile = -1;
+
+		$scope.makeURLParams();
+	}
+
+	$scope.unplace = function ({ tile, row, col }) {
+		$scope.grid[row][col] = new Tile({ row, col });
+		tile.unplace();
+		$scope.selectedTile = tile;
+
+		$scope.makeURLParams();
 	}
 
 	$scope.score = function () {
@@ -268,8 +328,17 @@ angular.module('cwc', []).controller('play', ['$scope', '$location', function ($
 			return className;
 		}
 		if (tile.index !== -1) {
-			return 'selectable';
+			return 'real selectable';
 		}
+	}
+
+	$scope.copyURL = function (mode) {
+		$scope.makeURLParams(mode).then(function () {
+			document.getElementById('text').value = window.location;
+			document.getElementById('text').select();
+			document.execCommand('copy');
+			alert('URL Copied');
+		});
 	}
 
 }]);

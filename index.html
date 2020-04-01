@@ -11,7 +11,7 @@
 
 	<link href="https://fonts.googleapis.com/css2?family=Raleway&family=Ranchers&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="./style.css" />
-	<!-- <link rel="shortcut icon" href="/img/favicon.png" /> -->
+	<link rel="shortcut icon" href="./favicon.png" />
 
 </head>
 
@@ -37,7 +37,7 @@
 		</div>
 		<div class="tiles">
 			<div class="tile-holder" ng-repeat="tile in tiles">
-				<div class="tile" ng-click="selectHeaderTile(tile)"
+				<div class="tile selectable" ng-click="selectHeaderTile(tile)"
 					ng-class="tile.isInPlay() ? 'played' : tile.index === selectedTile.index ? 'selected' : '' ">
 					<div class="character">{{ tile.displayCharacter() }}</div>
 					<div class="value">{{ tile.displayValue() }}</div>
@@ -45,14 +45,21 @@
 			</div>
 		</div>
 		<div class="actions">
-			<div class="button roll" ng-click="newRoll()">
+			<div class="button clickable" ng-click="newRoll()">
 				New Roll
 			</div>
 			<div class="button">
 				Score: {{ displayScore() }}
 			</div>
+			<div class="button clickable" ng-click="copyURL('ROLL')">
+				Share Roll
+			</div>
+			<div class="button clickable" ng-click="copyURL()">
+				Share Score
+			</div>
 		</div>
 	</div>
+	<input id="text" type="text" />
 
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
