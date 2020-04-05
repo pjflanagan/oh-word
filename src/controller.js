@@ -49,6 +49,7 @@ angular.module('cwc', []).controller('play', ['$scope', '$location', function ($
 	$scope.replace = function ({ row, col, tile }) {
 		$scope.grid[row][col] = $scope.selectedTile;
 		$scope.selectedTile.place({ row, col });
+		tile.unplace();
 		$scope.selectedTile = tile;
 		$scope.makeURLParams();
 	}

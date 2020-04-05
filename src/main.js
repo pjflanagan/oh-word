@@ -187,13 +187,13 @@ const makeURLParams = function (mode, tiles) {
 			const row = (mode === 'ROLL') ? -1 : pad(tile.row);
 			const col = (mode === 'ROLL') ? -1 : pad(tile.col);
 			return `${tile.character}${row}${col}`;
-		})
+		}).toString()
 	);
 };
 
 const makeTilesFromURL = function (tiles) {
 	const newTiles = [];
-	JSON.parse(tiles).forEach((tile, i) => {
+	JSON.parse(tiles).split(',').forEach((tile, i) => {
 		const character = tile[0];
 		const row = parseInt(tile[1] + tile[2]);
 		const col = parseInt(tile[3] + tile[4]);
