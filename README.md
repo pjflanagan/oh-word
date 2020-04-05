@@ -1,10 +1,11 @@
 TODO:
 - [x] share button (share config, share roll)
-- [ ] popup when you click the share button
+- [ ] popup when you click the share button (not alert)
 - [x] modularize code now that it's getting bigger
 - [x] mobile sizing - get rid of dock completley and only show the tile that is currently placeable (replace instead of place, should work for all tiles, even blank ones)
-- [ ] social media share card with logo (make your own logo)
-- [ ] fix all the hashtags and exclamation points in path
+- [ ] change the name of this game
+- [ ] social media share card with logo (make your own logo, not the actual cross word cubes)
+- [x] fix all the hashtags and exclamation points in path (hashbang)
 - [ ] hover effect on tiles (animation that rotates them a little and makes them bigger)
 - [x] no cursor on empty squares, hover instead
 - [x] detect islands and don't reward points: only reward points for the largest island, subtract points for the others
