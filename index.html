@@ -5,7 +5,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
 
 	<title>Cross Word Cubes</title>
 
@@ -37,29 +37,60 @@
 				CROSS WORD CUBES
 			</div>
 		</div>
-		<div class="grid-holder">
-			<div class="grid">
-				<div class="row" ng-repeat="row in grid">
-					<div class="col" ng-repeat="tile in row">
-						<div class="tile" ng-class="styleGridTile(tile)" ng-click="selectGridTile(tile)"
-							ng-style="tile.style">
-							<div class="character">{{ tile.displayCharacter() }}</div>
-							<div class="value">{{ tile.displayValue() }}</div>
+		<div class="grid-container">
+			<div class="grid-holder">
+				<div class="grid">
+					<div class="row" ng-repeat="row in grid">
+						<div class="col" ng-repeat="tile in row">
+							<div class="grid-tile" ng-class="styleGridTile(tile)" ng-click="selectGridTile(tile)"
+								ng-style="tile.style">
+								<div class="character">{{ tile.displayCharacter() }}</div>
+								<div class="value">{{ tile.displayValue() }}</div>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="tiles">
-			<div class="tile-holder" ng-repeat="tile in tiles">
-				<div class="tile selectable" ng-click="selectHeaderTile(tile)"
-					ng-class="tile.isInPlay() ? 'played' : tile.index === selectedTile.index ? 'selected' : '' ">
-					<div class="character">{{ tile.displayCharacter() }}</div>
-					<div class="value">{{ tile.displayValue() }}</div>
+		<div class="dock">
+			<div class="dock-item">
+				<div class="dock-tile" ng-class="selectedTile.index === -1 ? 'empty' : ''">
+					<div class="character">{{ selectedTile.displayCharacter() }}</div>
+					<div class="value">{{ selectedTile.displayValue() }}</div>
+				</div>
+			</div>
+			<div class="dock-item">
+				<div class="button">
+					<div class="top">{{ displayScore() }}</div>
+					<div class="bottom">Score</div>
+				</div>
+			</div>
+			<div class="dock-item">
+				<div class="button clickable" ng-click="newRoll()">
+					<div class="top">Re-</div>
+					<div class="bottom">Roll</div>
+				</div>
+			</div>
+			<div class="dock-item">
+				<div class="button clickable" ng-click="copyURL('ROLL')">
+					<div class="top">Roll</div>
+					<div class="bottom">Share</div>
+				</div>
+			</div>
+			<div class="dock-item">
+				<div class="button clickable" ng-class="$scope.selectedTile.index === -1 ? 'disabled' : ''"
+					ng-click="copyURL()">
+					<div class="top">Score</div>
+					<div class="bottom">Share</div>
 				</div>
 			</div>
 		</div>
-		<div class="actions">
+		<!-- <div class="actions">
+			<div class="tile selectable" ng-click="selectHeaderTile(tile)"
+				ng-class="selectedTile.index === -1 ? 'blank' : 'selected' ">
+				<div class="character">{{ selectedTile.displayCharacter() }}</div>
+				<div class="value">{{ selectedTile.displayValue() }}</div>
+			</div>
 			<div class="button clickable" ng-click="newRoll()">
 				New Roll
 			</div>
@@ -69,16 +100,18 @@
 			<div class="button clickable" ng-click="copyURL('ROLL')">
 				Share Roll
 			</div>
-			<div class="button clickable" ng-click="copyURL()">
+			<div class="button clickable" ng-class="$scope.selectedTile.index === -1 ? 'disabled' : ''"
+				ng-click="copyURL()">
 				Share Score
 			</div>
-		</div>
+		</div> -->
 	</div>
 	<input style="display: none;" id="text" type="text" />
 
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-	<script src="./main.js?v=1" charset="UTF-8"></script>
+	<script src="./src/main.js?v=1" charset="UTF-8"></script>
+	<script src="./src/controller.js?v=1" charset="UTF-8"></script>
 </body>
 
 </html>
