@@ -7,7 +7,7 @@
 python -m SimpleHTTPServer 8000 
 ```
 
-# To Do
+## To Do
 - [ ] social media share card with logo (make your own logo, not the actual cross word cubes)
 - [ ] popup when you click the share button (not alert)
 - [ ] change the name of this game
