@@ -1,7 +1,7 @@
 
 # Play Cross Word Cubes
 
-(Play!)[http://pjflanagan.me/play-cross-word-cubes/]
+[Play Online!](http://pjflanagan.me/play-cross-word-cubes/)
 
 ## Run
 
