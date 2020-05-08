@@ -1,6 +1,8 @@
 
 # Play Cross Word Cubes
 
+(Play!)[http://pjflanagan.me/play-cross-word-cubes/]
+
 ## Run
 
 ```
