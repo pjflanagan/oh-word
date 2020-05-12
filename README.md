@@ -1,7 +1,7 @@
 
-# Play Cross Word Cubes
+# [Play Cross Word Cubes](http://pjflanagan.me/play-cross-word-cubes/)
 
-Cross Word Cubes is a Scrabble game. Players roll the cubes, then arrange the cubes to make a valid crossword. This webpage is designed to be shared with friends, so they can compete to make a higher score than you on the same roll.
+Cross Word Cubes is a Scrabble style game. Players roll the cubes, then arrange the tiles into a cross word formation containing valid words. You can share the roll to compete with a friend, or you can share the arrangement to show off your high score!
 
 ## Run Dev
 
