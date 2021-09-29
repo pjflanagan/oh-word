@@ -1,4 +1,3 @@
-export { }
 // function pad(num) {
 //   var s = "0" + num;
 //   return s.substr(s.length - 2);
@@ -24,3 +23,7 @@ export { }
 //   });
 //   return newTiles;
 // };
+
+export const URL = {
+
+}

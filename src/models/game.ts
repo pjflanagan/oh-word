@@ -2,7 +2,7 @@
 import { Alphabet, VALUES, CUBES, CubeModel, TileModel, EmptyTile } from '.';
 
 type ClusterType = number[];
-type GridType = TileModel[][];
+export type GridType = TileModel[][];
 
 const makeClusters = function (grid: GridType, tiles: TileModel[]): ClusterType[] {
   let untrackedTiles = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];

@@ -1,0 +1,83 @@
+/* -------------- DOCK --------------  */
+
+.dock {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin: 8px 0;
+  height: 64px;
+
+  .dock-item {
+    height: 100%;
+    width: 20%;
+    margin: 0;
+    padding: 8px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .dock-tile {
+      width: 100%;
+      max-width: 48px;
+      height: 100%;
+      background: #e4c071;
+      border-radius: 3px;
+      font-family: 'Raleway', sans-serif;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+
+      &.empty {
+        background: #0002;
+      }
+
+      .character {
+        width: 100%;
+        text-align: center;
+        padding-top: 10px;
+        font-size: 24px;
+      }
+
+      .value {
+        width: 100%;
+        text-align: right;
+        margin: -7px -5px;
+        font-size: 12px;
+      }
+    }
+
+    .button {
+      height: 100%;
+      width: 100%;
+      background: #6e0404;
+      color: #FFF;
+      border-radius: 3px;
+      text-align: center;
+      font-size: 16px;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+
+      .top {
+        text-align: center;
+        width: 100%;
+        font-size: 18px;
+        padding-top: 4px;
+      }
+
+      .bottom {
+        text-align: center;
+        width: 100%;
+        font-size: 12px;
+      }
+    }
+  }
+}

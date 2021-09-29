@@ -17,7 +17,7 @@ export const HeadComponent = () => {
       <meta property="og:description" content="Can you beat my score?" />
       <meta property="og:image"
         content="https://github.com/pjflanagan/play-cross-word-cubes/raw/gh-pages/crosswordcubes.jpg" />
-      <meta property="og:url" content="http://pjflanagan.me/play-cross-word-cubes/index.html" />
+      <meta property="og:url" content="http://pjflanagan.github.io/play-cross-word-cubes/index.html" />
       <meta name="twitter:card" content="Can you beat my score?" />
 
 
