@@ -1,1 +1,7 @@
+node_modules/
+.cache/
+public
+.env
+.netlify
+.package-lock
 .DS_Store

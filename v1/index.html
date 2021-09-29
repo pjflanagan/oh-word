@@ -1,0 +1,98 @@
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+  <!-- <base href=’/’> -->
+
+  <title>Cross Word Cubes</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Raleway&family=Ranchers&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css?v=1.1" />
+  <link rel="shortcut icon" href="./favicon.png" />
+
+  <!--  Essential META Tags -->
+
+  <meta property="og:title" content="Cross Word Cubes">
+  <meta property="og:description" content="Can you beat my score?">
+  <meta property="og:image"
+    content="https://github.com/pjflanagan/play-cross-word-cubes/raw/gh-pages/crosswordcubes.jpg">
+  <meta property="og:url" content="http://pjflanagan.me/play-cross-word-cubes/index.html">
+  <meta name="twitter:card" content="Can you beat my score?">
+
+
+  <!--  Non-Essential, But Recommended -->
+
+  <meta property="og:site_name" content="European Travel, Inc.">
+  <meta name="twitter:image:alt" content="Alt text for image">
+
+</head>
+
+<body>
+  <div id="app" ng-app="cwc" ng-controller="play" ng-init="init()">
+    <div class="header">
+      <div class="title">
+        CROSS WORD CUBES
+      </div>
+    </div>
+    <div class="grid-container">
+      <div class="grid-holder">
+        <div class="grid">
+          <div class="row" ng-repeat="row in grid">
+            <div class="col" ng-repeat="tile in row">
+              <div class="grid-tile" ng-class="styleGridTile(tile)" ng-click="selectGridTile(tile)"
+                ng-style="tile.style">
+                <div class="character">{{ tile.displayCharacter() }}</div>
+                <div class="value">{{ tile.displayValue() }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="dock">
+      <div class="dock-item">
+        <div class="dock-tile" ng-class="selectedTile.index === -1 ? 'empty' : ''">
+          <div class="character">{{ selectedTile.displayCharacter() }}</div>
+          <div class="value">{{ selectedTile.displayValue() }}</div>
+        </div>
+      </div>
+      <div class="dock-item">
+        <div class="button">
+          <div class="top">{{ displayScore() }}</div>
+          <div class="bottom">Score</div>
+        </div>
+      </div>
+      <div class="dock-item">
+        <div class="button clickable" ng-click="newRoll()">
+          <div class="top">Re-</div>
+          <div class="bottom">Roll</div>
+        </div>
+      </div>
+      <div class="dock-item">
+        <div class="button clickable" ng-click="copyURL('ROLL')">
+          <div class="top">Roll</div>
+          <div class="bottom">Share</div>
+        </div>
+      </div>
+      <div class="dock-item">
+        <div class="button clickable" ng-class="$scope.selectedTile.index === -1 ? 'disabled' : ''"
+          ng-click="copyURL()">
+          <div class="top">Score</div>
+          <div class="bottom">Share</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <input id="text" type="text" />
+
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="./src/main.js?v=1.1" charset="UTF-8"></script>
+  <script src="./src/controller.js?v=1.1" charset="UTF-8"></script>
+</body>
+
+</html>
