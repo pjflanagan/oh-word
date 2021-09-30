@@ -7,6 +7,7 @@ module.exports = {
     `gatsby-plugin-sass`,
     `gatsby-plugin-root-import`,
     `gatsby-plugin-react-helmet`,
+    `gatsby-plugin-use-query-params`,
     {
       resolve: `gatsby-plugin-google-fonts`,
       options: {

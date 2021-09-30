@@ -1,38 +1,48 @@
 
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC } from 'react';
+import classNames from 'classnames';
 
-import { GridType, TileModel } from 'models';
+import { GridType, TileType, Tile } from 'models';
 
+import * as Style from './style.module.scss';
 
 type GridProps = {
   grid: GridType;
-  selectTile: (tile: TileModel) => void;
+  dockTile: TileType,
+  selectTile: (tile: TileType) => void;
 }
 
 const Grid: FC<GridProps> = ({
   grid,
+  dockTile,
   selectTile
 }) => {
 
-  return (
+  const getTileClassName = (tile: TileType) => {
+    return classNames(Style.gridTile, {
+      [Style.empty]: tile.id === -1,
+      [Style.selectable]: (tile.id === -1 && dockTile.id !== -1) || tile.id !== -1,
+      [Style.real]: tile.id !== -1,
+    });
+  }
 
-    <div className="grid-container">
-      <div className="grid-holder">
-        <div className="grid">
+  return (
+    <div className={Style.gridContainer}>
+      <div className={Style.gridHolder}>
+        <div className={Style.grid}>
           {
-            grid.map((row: TileModel[]) => (
-              <div className="row">
+            grid.map((row: TileType[], i) => (
+              <div className={Style.row} key={i}>
                 {
-                  row.map((tile: TileModel) => (
-                    <div className="col">
+                  row.map((tile: TileType, i) => (
+                    <div className={Style.col} key={i}>
                       <div
-                        className="grid-tile"
-                        // TODO: ng-className="styleGridTile(tile)" 
+                        className={getTileClassName(tile)}
+                        // TODO: ng-style="tile.style" this is for angles
                         onClick={() => selectTile(tile)}
-                      // TODO: ng-style="tile.style"
                       >
-                        <div className="character">{tile.displayCharacter()}</div>
-                        <div className="value">{tile.displayValue()}</div>
+                        <div className={Style.character}>{Tile.getDisplayCharacter(tile)}</div>
+                        <div className={Style.value}>{Tile.getDisplayValue(tile)}</div>
                       </div>
                     </div>
                   ))
@@ -42,7 +52,7 @@ const Grid: FC<GridProps> = ({
           }
         </div>
       </div>
-    </div>
+    </div >
   )
 }
 

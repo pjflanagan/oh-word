@@ -3,18 +3,27 @@ import { Game } from '.';
 
 export type Alphabet = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I' | 'J' | 'K' | 'L' | 'M' | 'N' | 'O' | 'P' | 'Q' | 'R' | 'S' | 'T' | 'U' | 'V' | 'W' | 'X' | 'Y' | 'Z' | '_' | '';
 
-type GridCoords = {
+
+type TileConstructorType = {
+  id?: number;
+  character?: Alphabet;
   row?: number;
   col?: number;
 }
 
-type TileModelConstructor = GridCoords & {
-  index?: number;
-  character?: Alphabet;
+type GridCoords = {
+  row: number;
+  col: number;
+}
+
+export type TileType = GridCoords & {
+  id: number;
+  character: Alphabet;
+  value: number;
 }
 
 // VALUES are all the values of each letter
-export const VALUES = {
+const VALUES = {
   'A': 1,
   'B': 3,
   'C': 3,
@@ -45,58 +54,39 @@ export const VALUES = {
   '': 0
 };
 
-// Tile holds a character and an index in the roll
-export class TileModel {
+export const Tile = {
+  makeTile: (tile: TileConstructorType): TileType => {
+    const id = (tile.id !== undefined) ? tile.id : -1; // id in roll, -1 means not set (empty grid spot)
+    const character = (tile.character !== undefined) ? tile.character : ''; // a character object with letter and value
+    const value = VALUES[character];
+    const row = (tile.row !== undefined) ? tile.row : -1;
+    const col = (tile.col !== undefined) ? tile.col : -1;
+    return { id, character, value, row, col };
+  },
+  isPlaced: (tile: TileType) => {
+    return tile.row !== -1 && tile.col !== -1;
+  },
+  getDisplayCharacter: (tile: TileType): string => {
+    return tile.character === '_' ? '' : tile.character;
+  },
+  getDisplayValue: (tile: TileType) => {
+    return tile.value === 0 ? '' : tile.value;
+  },
+  makeUnplacedTile: (tile: TileType) => {
+    return {
+      ...tile,
+      row: -1,
+      col: -1,
+    };
+  },
+  makePlacedTile: (tile: TileType, { row, col }: GridCoords) => {
+    return {
+      ...tile,
+      row,
+      col
+    };
+  },
+};
 
-  index: number;
-  character: Alphabet;
-  value: number;
-  row: number;
-  col: number;
-  // angle: number;
-
-  constructor({ index, character, row, col }: TileModelConstructor) {
-    this.index = index || -1; // index in roll, -1 means not set (empty grid spot)
-    this.character = (!!character) ? character : ''; // a character object with letter and value
-    this.value = !!character ? Game.getValue(character) : 0;
-    this.row = row || -1;
-    this.col = col || -1;
-    // this.angle = (Math.random() * 6) - 3;
-  }
-
-  isInPlay() {
-    return this.row !== -1 && this.col !== -1;
-  }
-
-  displayCharacter() {
-    if (this.character === '_') {
-      return '';
-    }
-    return this.character;
-  }
-
-  displayValue() {
-    if (this.value === 0) {
-      return '';
-    }
-    return this.value;
-  }
-
-  unplace() {
-    this.row = -1;
-    this.col = -1;
-  }
-
-  place({ row, col }: GridCoords) {
-    this.row = row || -1;
-    this.col = col || -1;
-
-    // if (this.index >= 0) {
-    //   const deg = Math.random() * 6 - 3;
-    //   this.style = { transform: `rotate(${deg}deg)` };
-    // } else this.style = '';
-  }
-}
-
-export const EmptyTile = new TileModel({});
+export const EmptyTile = Tile.makeTile({});
 

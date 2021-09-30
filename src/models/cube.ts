@@ -3,36 +3,35 @@ import { Alphabet } from ".";
 
 // Cube contains all the letters on a cube and can be rolled
 // this DOES NOT retain which letter is currently facing up
-export class CubeModel {
+// TODO: remove class, make this functions
 
-  letters: Alphabet[];
+export type Cube = Alphabet[];
 
-  constructor(letters: string) {
-    this.letters = letters.split('').map(l => {
-      return l as Alphabet;
-    });
-  }
+export const makeCube = (letters: string): Cube => {
+  return letters.split('').map(l => {
+    return l as Alphabet;
+  });
+}
 
-  roll(): Alphabet {
-    return this.letters[
-      Math.floor(Math.random() * this.letters.length)
-    ];
-  }
+export const rollCube = (cube: Cube): Alphabet => {
+  return cube[
+    Math.floor(Math.random() * cube.length)
+  ];
 }
 
 export const CUBES = [
-  new CubeModel('ZXWTSN'),
-  new CubeModel('QJBNTR'),
-  new CubeModel('HVGDLN'),
-  new CubeModel('FPCMTR'),
-  new CubeModel('KBDGSR'),
-  new CubeModel('WPDSTL'),
-  new CubeModel('FVENLR'),
-  new CubeModel('HMGELR'),
-  new CubeModel('CSAEIO'),
-  new CubeModel('NTAEIO'),
-  new CubeModel('AEIOUY'),
-  new CubeModel('AEIOUY'),
-  new CubeModel('AEIOU_'),
-  new CubeModel('AEIOU_')
+  makeCube('ZXWTSN'),
+  makeCube('QJBNTR'),
+  makeCube('HVGDLN'),
+  makeCube('FPCMTR'),
+  makeCube('KBDGSR'),
+  makeCube('WPDSTL'),
+  makeCube('FVENLR'),
+  makeCube('HMGELR'),
+  makeCube('CSAEIO'),
+  makeCube('NTAEIO'),
+  makeCube('AEIOUY'),
+  makeCube('AEIOUY'),
+  makeCube('AEIOU_'),
+  makeCube('AEIOU_')
 ];
