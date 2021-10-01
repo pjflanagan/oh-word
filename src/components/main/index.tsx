@@ -1,7 +1,7 @@
 import React, { FC, useState, useEffect } from 'react';
-import { useLocation } from "react-router-dom"; // useHistory
+import { useHistory, useLocation } from "react-router-dom";
 
-import { makeTilesFromURL, Game, TileType, Tile, CopyTypeEnum, makeURLParams, EmptyTile } from 'models';
+import { makeTilesFromTileString, Game, TileType, Tile, CopyTypeEnum, makeURLParamString, EmptyTile } from 'models';
 
 import { Dock } from './dock';
 import { Header } from './header';
@@ -11,33 +11,35 @@ import * as Style from './style.module.scss';
 
 const MainComponent: FC = () => {
 
-  // const history = useHistory();
+  const history = useHistory();
   const location = useLocation();
 
   const [tiles, setTiles] = useState<TileType[]>([]);
-  // TODO: keep track of the id of the docked tile not the tile itself
   const [dockTileId, setDockTileId] = useState<number>(-1);
 
   const newRoll = () => {
     const roll = Game.makeRollString();
-    console.log({ roll });
     const newTiles = Game.makeTiles(roll);
-    console.log({ newTiles });
     setTiles(newTiles);
-    // makeURLParams(tiles);
+  }
+
+
+  const setURLParams = async (copyType: CopyTypeEnum = 'SCORE') => {
+    history.replace({
+      pathname: '',
+      search: makeURLParamString(copyType, tiles)
+    });
   }
 
   useEffect(() => {
     if (location?.search !== '') {
       const params = new URLSearchParams(location.search);
       const tilesParam = params.get('tiles');
-      console.log({ tilesParam });
       if (!tilesParam) {
         newRoll();
         return;
       }
-      const newTiles = makeTilesFromURL(tilesParam);
-      console.log({ newTiles });
+      const newTiles = makeTilesFromTileString(tilesParam);
       if (newTiles.length === 0) {
         newRoll();
         return;
@@ -48,16 +50,12 @@ const MainComponent: FC = () => {
     newRoll();
   }, []);
 
+  useEffect(() => {
+    setURLParams();
+  }, [tiles]);
+
   const getScore = () => {
     return Game.getScore(tiles);
-  }
-
-  const setURLParams = async (copyType: CopyTypeEnum = 'SCORE') => {
-    console.log(makeURLParams(copyType, tiles));
-    // history.replace({
-    //   pathname: '',
-    //   search: `?tiles=${makeURLParams(copyType, tiles)}`
-    // });
   }
 
   const copyURL = (copyType: CopyTypeEnum) => {
@@ -84,7 +82,6 @@ const MainComponent: FC = () => {
       const newlyPlacedTile = Tile.makePlacedTile(dockTile, { row: selectedTile.row, col: selectedTile.col });
       newTiles = [...newTiles, newlyPlacedTile];
     }
-    console.log(newTiles);
     setTiles(newTiles);
     setDockTileId(selectedTile.id);
   }

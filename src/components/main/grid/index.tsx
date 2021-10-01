@@ -1,22 +1,34 @@
 
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import classNames from 'classnames';
 
 import { GridType, TileType, Tile } from 'models';
 
 import * as Style from './style.module.scss';
 
-type GridProps = {
-  grid: GridType;
-  dockTile: TileType,
+type TileProps = {
+  tile: TileType,
+  dockTile: TileType;
   selectTile: (tile: TileType) => void;
 }
 
-const Grid: FC<GridProps> = ({
-  grid,
+const TileComponent: FC<TileProps> = ({
+  tile,
   dockTile,
   selectTile
 }) => {
+
+  const [deg, setDeg] = useState<number>(0);
+
+  useEffect(() => {
+    const deg = Math.random() * 6 - 3;
+    setDeg(deg);
+  }, [tile]);
+
+
+  const getTileStyle = () => {
+    return { transform: `rotate(${deg}deg)` };
+  }
 
   const getTileClassName = (tile: TileType) => {
     return classNames(Style.gridTile, {
@@ -25,6 +37,30 @@ const Grid: FC<GridProps> = ({
       [Style.real]: tile.id !== -1,
     });
   }
+
+  return (
+    <div
+      className={getTileClassName(tile)}
+      onClick={() => selectTile(tile)}
+      style={getTileStyle()}
+    >
+      <div className={Style.character}>{Tile.getDisplayCharacter(tile)}</div>
+      <div className={Style.value}>{Tile.getDisplayValue(tile)}</div>
+    </div>
+  )
+}
+
+type GridProps = {
+  grid: GridType;
+  dockTile: TileType;
+  selectTile: (tile: TileType) => void;
+}
+
+const Grid: FC<GridProps> = ({
+  grid,
+  dockTile,
+  selectTile
+}) => {
 
   return (
     <div className={Style.gridContainer}>
@@ -36,14 +72,11 @@ const Grid: FC<GridProps> = ({
                 {
                   row.map((tile: TileType, i) => (
                     <div className={Style.col} key={i}>
-                      <div
-                        className={getTileClassName(tile)}
-                        // TODO: ng-style="tile.style" this is for angles
-                        onClick={() => selectTile(tile)}
-                      >
-                        <div className={Style.character}>{Tile.getDisplayCharacter(tile)}</div>
-                        <div className={Style.value}>{Tile.getDisplayValue(tile)}</div>
-                      </div>
+                      <TileComponent
+                        tile={tile}
+                        dockTile={dockTile}
+                        selectTile={selectTile}
+                      />
                     </div>
                   ))
                 }

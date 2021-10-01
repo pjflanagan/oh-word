@@ -1,13 +1,12 @@
 module.exports = {
   siteMetadata: {
-    siteUrl: `https://weather-drunk.pjflanagan.me`,
-    title: `Weather Drunk`,
+    siteUrl: `https://crosswordcubes.flanny.app`,
+    title: `Cross Word Cubes`,
   },
   plugins: [
     `gatsby-plugin-sass`,
     `gatsby-plugin-root-import`,
     `gatsby-plugin-react-helmet`,
-    `gatsby-plugin-use-query-params`,
     {
       resolve: `gatsby-plugin-google-fonts`,
       options: {

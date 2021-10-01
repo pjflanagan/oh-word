@@ -54,7 +54,6 @@ angular.module('cwc', []).controller('play', ['$scope', '$location', function ($
     let scoreLargestCluster = 0;
     let scoreOthers = 0;
 
-    // TODO: move this logic to a helper function
     $scope.tiles.forEach(tile => {
       if (largestCluster.includes(tile.index)) {
         // if this is in the largest cluster then determine how much it is worth

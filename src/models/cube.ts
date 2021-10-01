@@ -3,7 +3,6 @@ import { Alphabet } from ".";
 
 // Cube contains all the letters on a cube and can be rolled
 // this DOES NOT retain which letter is currently facing up
-// TODO: remove class, make this functions
 
 export type Cube = Alphabet[];
 

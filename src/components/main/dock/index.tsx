@@ -17,7 +17,7 @@ const Dock: FC<DockProps> = ({ dockTile, score, newRoll, copyURL }) => {
 
   const tileClassName = dockTile.id === -1 ? Style.empty : '';
   const scoreShareClassName = classNames(Style.button, {
-    [Style.disabled]: dockTile.id === -1,
+    [Style.disabled]: dockTile.id !== -1,
   });
 
   return (

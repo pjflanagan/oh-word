@@ -15,7 +15,7 @@ const getLargestCluster = (grid: GridType, tiles: TileType[]): ClusterType => {
 
 export const makeClusters = function (grid: GridType, tiles: TileType[]): ClusterType[] {
   let untrackedTiles = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
-  let loopLimit = 0; // TODO: remove me
+  let loopLimit = 0; // TODO: remove me and fix algo, algo is doubling some numbers
   const clusters = [];
   while (untrackedTiles.length > 0 && loopLimit < CUBE_COUNT) {
     loopLimit++;
