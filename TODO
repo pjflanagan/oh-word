@@ -1,0 +1,7 @@
+- [ ] social media share card with logo (make your own logo, not the actual cross word cubes)
+- [ ] popup when you click the share button (not alert)
+- [ ] change the name of this game
+- [ ] hover effect on tiles (animation that rotates them a little and makes them bigger, CUTE)
+- [ ] copy url work on mobile (clipboard.js?)
+- [ ] validate words against dictionary
+- [ ] animate die roll

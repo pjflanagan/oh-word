@@ -4,6 +4,7 @@ module.exports = {
     title: `Cross Word Cubes`,
   },
   plugins: [
+    `gatsby-plugin-use-query-params`,
     `gatsby-plugin-sass`,
     `gatsby-plugin-root-import`,
     `gatsby-plugin-react-helmet`,

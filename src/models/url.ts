@@ -7,7 +7,7 @@ function pad(num: number) {
   return s.substr(s.length - 2);
 }
 
-const makeTileString = (mode: CopyTypeEnum, tiles: TileType[]): string => {
+export const makeTileString = (mode: CopyTypeEnum, tiles: TileType[]): string => {
   return tiles.map(tile => {
     const row = (mode === 'ROLL') ? -1 : pad(tile.row);
     const col = (mode === 'ROLL') ? -1 : pad(tile.col);

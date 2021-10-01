@@ -1,19 +1,16 @@
 import React, { FC, useState, useEffect } from 'react';
-import { useHistory, useLocation } from "react-router-dom";
+import { useQueryParam, StringParam } from "use-query-params";
 
-import { makeTilesFromTileString, Game, TileType, Tile, CopyTypeEnum, makeURLParamString, EmptyTile } from 'models';
+import { makeTilesFromTileString, Game, TileType, Tile, CopyTypeEnum, makeTileString, EmptyTile } from 'models';
 
 import { Dock } from './dock';
 import { Header } from './header';
 import { Grid } from './grid';
 import * as Style from './style.module.scss';
 
-
 const MainComponent: FC = () => {
 
-  const history = useHistory();
-  const location = useLocation();
-
+  const [tilesQueryParam, setTilesQueryParam] = useQueryParam('tiles', StringParam);
   const [tiles, setTiles] = useState<TileType[]>([]);
   const [dockTileId, setDockTileId] = useState<number>(-1);
 
@@ -23,31 +20,21 @@ const MainComponent: FC = () => {
     setTiles(newTiles);
   }
 
-
   const setURLParams = async (copyType: CopyTypeEnum = 'SCORE') => {
-    history.replace({
-      pathname: '',
-      search: makeURLParamString(copyType, tiles)
-    });
+    setTilesQueryParam(makeTileString(copyType, tiles));
   }
 
   useEffect(() => {
-    if (location?.search !== '') {
-      const params = new URLSearchParams(location.search);
-      const tilesParam = params.get('tiles');
-      if (!tilesParam) {
-        newRoll();
-        return;
-      }
-      const newTiles = makeTilesFromTileString(tilesParam);
-      if (newTiles.length === 0) {
-        newRoll();
-        return;
-      }
-      setTiles(newTiles);
+    if (!tilesQueryParam) {
+      newRoll();
       return;
     }
-    newRoll();
+    const newTiles = makeTilesFromTileString(tilesQueryParam);
+    if (newTiles.length === 0) {
+      newRoll();
+      return;
+    }
+    setTiles(newTiles);
   }, []);
 
   useEffect(() => {
