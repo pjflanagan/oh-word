@@ -17,6 +17,7 @@ const MainComponent: FC = () => {
   const newRoll = () => {
     const roll = Game.makeRollString();
     const newTiles = Game.makeTiles(roll);
+    setDockTileId(-1);
     setTiles(newTiles);
   }
 

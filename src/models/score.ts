@@ -1,4 +1,4 @@
-import { GridType, TileType, EmptyTile, Tile, CUBE_COUNT } from '.';
+import { GridType, TileType, EmptyTile, Tile, CUBE_COUNT, Game } from '.';
 
 type ClusterType = number[];
 
@@ -13,7 +13,7 @@ const getLargestCluster = (grid: GridType, tiles: TileType[]): ClusterType => {
   return largestCluster;
 };
 
-export const makeClusters = function (grid: GridType, tiles: TileType[]): ClusterType[] {
+const makeClusters = function (grid: GridType, tiles: TileType[]): ClusterType[] {
   let untrackedTiles = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
   let loopLimit = 0; // TODO: remove me
   const clusters = [];
@@ -67,7 +67,8 @@ const makeCluster = function (grid: GridType, tile: TileType, cluster: ClusterTy
   return cluster;
 }
 
-export const getScore = (grid: GridType, tiles: TileType[]) => {
+export const getScore = (tiles: TileType[]) => {
+  const grid = Game.makeGridFromTiles(tiles);
   const largestCluster = getLargestCluster(grid, tiles);
   let scoreLargestCluster = 0;
   let scoreOthers = 0;

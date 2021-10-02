@@ -70,8 +70,7 @@ export const Game = {
     if (!tiles || tiles.length === 0) {
       return 0;
     }
-    const grid = Game.makeGridFromTiles(tiles);
-    const score = getScore(grid, tiles);
+    const score = getScore(tiles);
     return Math.max(score, 0);
   }
 }

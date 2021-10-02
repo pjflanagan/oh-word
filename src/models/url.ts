@@ -1,4 +1,4 @@
-import { Alphabet, TileType, Tile, CUBE_COUNT } from "models";
+import { Alphabet, TileType, Tile, CUBE_COUNT } from ".";
 
 export type CopyTypeEnum = 'ROLL' | 'SCORE';
 
