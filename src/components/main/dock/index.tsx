@@ -7,18 +7,12 @@ import { Tile, Button } from 'elements';
 import * as Style from './style.module.scss';
 
 type DockProps = {
-  dockTile: TileType,
-  newRoll: () => void,
-  copyURL: (copyType: CopyTypeEnum) => void
+  dockTile: TileType;
+  newRoll: () => void;
+  score: number;
 }
 
-
-const Dock: FC<DockProps> = ({ dockTile, newRoll, copyURL }) => {
-
-  const tileClassName = dockTile.id === -1 ? Style.empty : '';
-  const scoreShareClassName = classNames(Style.button, {
-    [Style.disabled]: dockTile.id !== -1,
-  });
+const Dock: FC<DockProps> = ({ dockTile, newRoll, score }) => {
 
   return (
     <div className={Style.dock}>
@@ -34,19 +28,13 @@ const Dock: FC<DockProps> = ({ dockTile, newRoll, copyURL }) => {
           icon="New"
           label="Roll"
         />
+
+        <Button
+          disabled
+          icon={`${score}`}
+          label="Score"
+        />
       </div>
-      {/* <div className={Style.dockItem}>
-        <div className={Style.button} onClick={() => copyURL('ROLL')}>
-          <div className={Style.top}>Roll</div>
-          <div className={Style.bottom}>Share</div>
-        </div>
-      </div>
-      <div className={Style.dockItem}>
-        <div className={scoreShareClassName} onClick={() => copyURL('SCORE')}>
-          <div className={Style.top}>Score</div>
-          <div className={Style.bottom}>Share</div>
-        </div>
-      </div> */}
     </div >
   )
 }

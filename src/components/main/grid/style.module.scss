@@ -20,53 +20,6 @@
       right: 8px;
       width: calc(100% - 16px);
       height: calc(100% - 16px);
-
-      .grid-tile {
-        width: 100%;
-        height: 100%;
-        background: #e4c071;
-        opacity: 1;
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        box-sizing: border-box;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-        border-radius: 3px;
-
-        &.empty {
-          background: #0000;
-        }
-
-        &.selectable {
-          cursor: pointer;
-        }
-
-        &.empty.selectable:hover {
-          background: #0002;
-        }
-
-        &.real.selectable:hover {
-          transform: scale(1.2) !important;
-          box-shadow: 0px 2px 2px #0005;
-          z-index: 10;
-          position: relative;
-        }
-
-        .character {
-          width: 100%;
-          text-align: center;
-          padding-top: 2px;
-          font-size: 14px;
-        }
-
-        .value {
-          display: none;
-          text-align: right;
-          width: 100%;
-        }
-      }
     }
 
     .row {
@@ -76,67 +29,6 @@
       .col {
         width: 7.14285714%;
         padding: 2px;
-      }
-    }
-  }
-}
-
-@media only screen and (min-width: 400px) {
-  .grid-container {
-    .grid-holder {
-      .grid {
-        .grid-tile {
-          .character {
-            padding-top: 4px;
-            font-size: 14px;
-          }
-
-          .value {
-            display: block;
-            font-size: 8px;
-            margin: -6px -4px;
-          }
-        }
-      }
-    }
-  }
-}
-
-@media only screen and (min-width: 500px) {
-  .grid-container {
-    .grid-holder {
-      .grid {
-        .grid-tile {
-          .character {
-            padding-top: 6px;
-            font-size: 18px;
-          }
-
-          .value {
-            font-size: 11px;
-            margin: -8px -4px;
-          }
-        }
-      }
-    }
-  }
-}
-
-@media only screen and (min-width: 600px) {
-  .grid-container {
-    .grid-holder {
-      .grid {
-        .grid-tile {
-          .character {
-            padding-top: 7px;
-            font-size: 20px;
-          }
-
-          .value {
-            font-size: 12px;
-            margin: -8px -4px;
-          }
-        }
       }
     }
   }

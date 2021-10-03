@@ -7,9 +7,14 @@
   color: #FFF;
   box-sizing: border-box;
   cursor: pointer;
+  transition: background 0.4s;
 
   &.clickable {
     background: #6e0404;
+
+    &:hover {
+      background: #970505;
+    }
   }
 
   &.disabled,

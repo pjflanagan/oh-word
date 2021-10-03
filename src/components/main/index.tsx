@@ -88,7 +88,7 @@ const MainComponent: FC = () => {
       <Container>
         <Bun>
           <Header
-            score={score}
+            copyURL={copyURL}
           />
         </Bun>
         <Burger>
@@ -101,7 +101,7 @@ const MainComponent: FC = () => {
         <Bun>
           <Dock
             dockTile={dockTile}
-            copyURL={copyURL}
+            score={score}
             newRoll={newRoll}
           />
         </Bun>
