@@ -5,3 +5,10 @@ body {
   margin: 0 auto;
   background: #f0f1e7;
 }
+
+html,
+body,
+#___gatsby,
+#gatsby-focus-wrapper {
+  height: 100%;
+}

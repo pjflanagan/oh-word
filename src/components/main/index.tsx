@@ -2,6 +2,7 @@ import React, { FC, useState, useEffect } from 'react';
 import { useQueryParam, StringParam } from "use-query-params";
 
 import { makeTilesFromTileString, Game, TileType, Tile, CopyTypeEnum, makeTileString, EmptyTile } from 'models';
+import { Container, Burger, Bun } from 'elements';
 
 import { Dock } from './dock';
 import { Header } from './header';
@@ -46,6 +47,10 @@ const MainComponent: FC = () => {
     return Game.getScore(tiles);
   }
 
+  const makeGrid = () => {
+    return Game.makeGridFromTiles(tiles);
+  }
+
   const copyURL = (copyType: CopyTypeEnum) => {
     if (copyType === 'SCORE' && dockTileId !== -1) {
       // if you wanna share score and the selected tile is -1, it wont work
@@ -75,22 +80,32 @@ const MainComponent: FC = () => {
   }
 
   const dockTile = getDockTile();
-  const grid = Game.makeGridFromTiles(tiles);
+  const grid = makeGrid();
+  const score = getScore();
 
   return (
     <main className={Style.app}>
-      <Header />
-      <Grid
-        grid={grid}
-        dockTile={dockTile}
-        selectTile={replace}
-      />
-      <Dock
-        score={getScore()}
-        dockTile={dockTile}
-        copyURL={copyURL}
-        newRoll={newRoll}
-      />
+      <Container>
+        <Bun>
+          <Header
+            score={score}
+          />
+        </Bun>
+        <Burger>
+          <Grid
+            grid={grid}
+            dockTile={dockTile}
+            selectTile={replace}
+          />
+        </Burger>
+        <Bun>
+          <Dock
+            dockTile={dockTile}
+            copyURL={copyURL}
+            newRoll={newRoll}
+          />
+        </Bun>
+      </Container>
     </main>
   )
 }

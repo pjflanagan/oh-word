@@ -1,6 +1,10 @@
 .app {
-  margin: 0 auto;
-  max-width: 616px;
+  height: 100%;
   width: 100%;
-  font-family: 'Ranchers', sans-serif;
+  font-family: 'Raleway', sans-serif;
+
+  .content {
+    margin: 0 auto;
+    // object-fit: contain;
+  }
 }

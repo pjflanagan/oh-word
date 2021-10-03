@@ -3,10 +3,11 @@ import React, { FC, useEffect, useState } from 'react';
 import classNames from 'classnames';
 
 import { GridType, TileType, Tile } from 'models';
+// import { Tile } from 'elements';
 
 import * as Style from './style.module.scss';
 
-type TileProps = {
+type TileProps = { // TODO: move to element
   tile: TileType,
   dockTile: TileType;
   selectTile: (tile: TileType) => void;
@@ -18,11 +19,15 @@ const TileComponent: FC<TileProps> = ({
   selectTile
 }) => {
 
+  // TODO: grid tile on hover display dockTile info
+
   const [deg, setDeg] = useState<number>(0);
 
   useEffect(() => {
-    const deg = Math.random() * 6 - 3;
-    setDeg(deg);
+    if (tile.id !== -1) {
+      const deg = Math.random() * 6 - 3;
+      setDeg(deg);
+    }
   }, [tile]);
 
 

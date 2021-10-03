@@ -1,9 +1,20 @@
 .header {
-  height: 60px;
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
 
   .title {
-    font-size: 28px;
-    padding: 17px 8px;
+    width: 50%;
+    padding: 22px 0px;
+    font-size: 38px;
     color: #6e0404;
+    font-family: 'Ranchers', sans-serif;
+  }
+
+  .button-holder {
+    width: 50%;
+    display: flex;
+    padding: 15px 0;
+    flex-direction: row-reverse;
   }
 }
