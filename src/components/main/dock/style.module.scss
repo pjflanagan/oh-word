@@ -1,56 +1,15 @@
 /* -------------- DOCK --------------  */
 
 .dock {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: 100%;
-  margin: 8px 0;
-  height: 64px;
+  height: 100%;
+  display: flex;
 
-  .dock-item {
-    height: 100%;
-    width: 20%;
-    margin: 0;
-    padding: 8px;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .dock-tile {
+    width: 80px;
+  }
 
-    .dock-tile {
-      width: 100%;
-      max-width: 48px;
-      height: 100%;
-      background: #e4c071;
-      border-radius: 3px;
-      -webkit-box-sizing: border-box;
-      -moz-box-sizing: border-box;
-      box-sizing: border-box;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-
-      &.empty {
-        background: #0002;
-      }
-
-      .character {
-        width: 100%;
-        text-align: center;
-        padding-top: 10px;
-        font-size: 24px;
-      }
-
-      .value {
-        width: 100%;
-        text-align: right;
-        margin: -7px -5px;
-        font-size: 12px;
-      }
-    }
+  .dock-buttons {
+    width: calc(100% - 80px);
   }
 }

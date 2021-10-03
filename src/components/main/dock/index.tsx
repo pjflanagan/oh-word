@@ -1,8 +1,8 @@
 import React, { FC, useState, useEffect } from 'react';
 import classNames from 'classnames';
 
-import { TileType, Tile, CopyTypeEnum } from 'models';
-import { Button } from 'elements';
+import { TileType, CopyTypeEnum } from 'models';
+import { Tile, Button } from 'elements';
 
 import * as Style from './style.module.scss';
 
@@ -22,20 +22,20 @@ const Dock: FC<DockProps> = ({ dockTile, newRoll, copyURL }) => {
 
   return (
     <div className={Style.dock}>
-      <div className={Style.dockItem}>
-        <div className={`${Style.dockTile} ${tileClassName}`}>
-          <div className={Style.character}>{Tile.getDisplayCharacter(dockTile)}</div>
-          <div className={Style.value}>{Tile.getDisplayValue(dockTile)}</div>
-        </div>
+      <div className={Style.dockTile}>
+        <Tile
+          tile={dockTile}
+          selectable={dockTile.id !== -1}
+        />
       </div>
-      <div className={Style.dockItem}>
+      <div className={Style.dockButtons}>
         <Button
           onClick={newRoll}
           icon="New"
           label="Roll"
         />
       </div>
-      <div className={Style.dockItem}>
+      {/* <div className={Style.dockItem}>
         <div className={Style.button} onClick={() => copyURL('ROLL')}>
           <div className={Style.top}>Roll</div>
           <div className={Style.bottom}>Share</div>
@@ -46,7 +46,7 @@ const Dock: FC<DockProps> = ({ dockTile, newRoll, copyURL }) => {
           <div className={Style.top}>Score</div>
           <div className={Style.bottom}>Share</div>
         </div>
-      </div>
+      </div> */}
     </div >
   )
 }

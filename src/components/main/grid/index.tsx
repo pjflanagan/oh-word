@@ -3,57 +3,9 @@ import React, { FC, useEffect, useState } from 'react';
 import classNames from 'classnames';
 
 import { GridType, TileType, Tile } from 'models';
-// import { Tile } from 'elements';
+import { Tile as TileComponent } from 'elements';
 
 import * as Style from './style.module.scss';
-
-type TileProps = { // TODO: move to element
-  tile: TileType,
-  dockTile: TileType;
-  selectTile: (tile: TileType) => void;
-}
-
-const TileComponent: FC<TileProps> = ({
-  tile,
-  dockTile,
-  selectTile
-}) => {
-
-  // TODO: grid tile on hover display dockTile info
-
-  const [deg, setDeg] = useState<number>(0);
-
-  useEffect(() => {
-    if (tile.id !== -1) {
-      const deg = Math.random() * 6 - 3;
-      setDeg(deg);
-    }
-  }, [tile]);
-
-
-  const getTileStyle = () => {
-    return { transform: `rotate(${deg}deg)` };
-  }
-
-  const getTileClassName = (tile: TileType) => {
-    return classNames(Style.gridTile, {
-      [Style.empty]: tile.id === -1,
-      [Style.selectable]: (tile.id === -1 && dockTile.id !== -1) || tile.id !== -1,
-      [Style.real]: tile.id !== -1,
-    });
-  }
-
-  return (
-    <div
-      className={getTileClassName(tile)}
-      onClick={() => selectTile(tile)}
-      style={getTileStyle()}
-    >
-      <div className={Style.character}>{Tile.getDisplayCharacter(tile)}</div>
-      <div className={Style.value}>{Tile.getDisplayValue(tile)}</div>
-    </div>
-  )
-}
 
 type GridProps = {
   grid: GridType;
@@ -79,8 +31,8 @@ const Grid: FC<GridProps> = ({
                     <div className={Style.col} key={i}>
                       <TileComponent
                         tile={tile}
-                        dockTile={dockTile}
-                        selectTile={selectTile}
+                        onClick={() => selectTile(tile)}   // TODO: empty grid tile on hover display dockTile info
+                        selectable={(tile.id === -1 && dockTile.id !== -1) || tile.id !== -1}
                       />
                     </div>
                   ))
