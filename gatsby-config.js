@@ -1,7 +1,10 @@
+
+const TITLE = 'Crossword Cubes';
+
 module.exports = {
   siteMetadata: {
     siteUrl: `https://crosswordcubes.flanny.app`,
-    title: `Cross Word Cubes`,
+    title: TITLE,
   },
   plugins: [
     `gatsby-plugin-use-query-params`,
@@ -22,13 +25,13 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `Cross Word Cubes`,
-        short_name: `Cross Word Cubes`,
+        name: TITLE,
+        short_name: TITLE,
         start_url: `/`,
-        background_color: `#024e98`,
-        theme_color: `#024e98`,
+        background_color: `#f0f1e7`,
+        theme_color: `#f0f1e7`,
         display: `standalone`,
-        icon: `src/images/icon.png`,
+        icon: `static/img/logo/logo.png`,
       },
     },
   ],

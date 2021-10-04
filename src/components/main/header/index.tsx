@@ -15,7 +15,7 @@ const Header: FC<HeaderProps> = ({
   return (
     <div className={Style.header}>
       <div className={Style.title}>
-        {'Cross Word Cubes'}
+        {'Crossword Cubes'}
       </div>
       <div className={Style.buttonHolder}>
         <Button
