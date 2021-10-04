@@ -6,15 +6,15 @@ const DESCRIPTION = 'Can you beat my score?';
 const ROOT = "https://crosswordcubes.flanny.app";
 const IMG = `${ROOT}/img/social/social.png`;
 const IMG_TW = `${ROOT}/img/social/social-tw.png`;
-const FAVICON = `${ROOT}/img/logo/favicon.png`;
+const FAVICON_32 = `${ROOT}/img/logo/favicon.png`;
+const FAVICON_16 = `${ROOT}/img/logo/favicon.ico`;
 
 const AUTHOR = "Peter James Flanagan";
 const HANDLE = "@peterjflan";
 
 const faviconLinks = [
-  // { rel: "icon", type: "image/png", sizes: "16x16", href: favicon16x16 },
-  { rel: "icon", type: "image/png", sizes: "32x32", href: FAVICON },
-  // { rel: "shortcut icon", type: "image/png", href: favicon64x64 },
+  { rel: "icon", type: "image/png", sizes: "16x16", href: FAVICON_16 },
+  { rel: "icon", type: "image/png", sizes: "32x32", href: FAVICON_32 },
 ];
 
 export const HeadComponent = () => {
