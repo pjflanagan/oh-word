@@ -32,6 +32,7 @@ module.exports = {
         theme_color: `#f0f1e7`,
         display: `standalone`,
         icon: `static/img/logo/logo.png`,
+        include_favicon: false,
       },
     },
   ],

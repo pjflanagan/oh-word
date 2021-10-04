@@ -6,10 +6,10 @@ Priority:
   - size for all screens properly
   - No highlight text 
   - center playing board vertically
-- [ ] change the name of this game
-- [ ] social media share card with logo (make your own logo, not the actual crossword cubes)
+- [x] social media share card with logo (make your own logo, not the actual crossword cubes)
 
 Secondary:
+- [ ] change the name of this game
 - [ ] animations for when we hover the New Roll button
 
 Long Term:
