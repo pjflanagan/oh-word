@@ -11,6 +11,8 @@
     padding-top: 100%;
     width: 100%;
     background: #cc88370d;
+    top: 50%;
+    transform: translateY(-50%);
 
     .grid {
       position: absolute;

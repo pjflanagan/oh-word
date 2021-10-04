@@ -11,8 +11,9 @@
     }
 
     &.burger {
-      height: calc(100% - 160px);
-      max-height: 616px;
+      min-height: calc(100% - 160px); // min fill the screen
+      height: 100vw; // default to how wide the screen is
+      max-height: 616px; // max of 616
     }
   }
 }
