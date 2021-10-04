@@ -8,6 +8,7 @@ module.exports = {
     `gatsby-plugin-sass`,
     `gatsby-plugin-root-import`,
     `gatsby-plugin-react-helmet`,
+    `gatsby-plugin-offline`,
     {
       resolve: `gatsby-plugin-google-fonts`,
       options: {
@@ -30,6 +31,5 @@ module.exports = {
         icon: `src/images/icon.png`,
       },
     },
-    `gatsby-plugin-offline`
   ],
 };

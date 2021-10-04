@@ -1,4 +1,4 @@
-import { Alphabet, TileType, Tile, CUBE_COUNT } from ".";
+import { Alphabet, TileType, Tile, CUBE_COUNT, placeTilesRandomly } from '.';
 
 export type CopyTypeEnum = 'ROLL' | 'SCORE';
 
@@ -24,15 +24,21 @@ export const makeURLParamString = (mode: CopyTypeEnum, tiles: TileType[]): strin
 
 export const makeTilesFromTileString = (tiles: string): TileType[] => {
   const newTiles: TileType[] = [];
+  let modeRoll: boolean = false;
   tiles.split('.').forEach((tile: string, i: number) => {
     const character = tile[0] as Alphabet;
     const row = parseInt(tile[1] + tile[2]);
     const col = parseInt(tile[3] + tile[4]);
+    if (row === -1 || col === -1) {
+      modeRoll = true;
+    }
     newTiles.push(Tile.makeTile({ id: i, character, row, col }));
   });
-  // TODO: error check
   if (newTiles.length !== CUBE_COUNT) {
     return [];
+  }
+  if (modeRoll) {
+    return placeTilesRandomly(newTiles);
   }
   return newTiles;
 };

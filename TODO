@@ -1,7 +1,19 @@
-- [ ] social media share card with logo (make your own logo, not the actual cross word cubes)
-- [ ] popup when you click the share button (not alert)
+
+Priority:
+- [ ] make copy link for sharing work (make it a popup instead?, no alert)
+  - copy URL doesn't change the page URL, just gets the base URL and appends
+- [ ] icons for buttons
+
+Style Quick
+- No highlight text 
+- center playing board vertically
+
+Secondary:
 - [ ] change the name of this game
-- [ ] hover effect on tiles (animation that rotates them a little and makes them bigger, CUTE)
-- [ ] copy url work on mobile (clipboard.js?)
+- [ ] social media share card with logo (make your own logo, not the actual cross word cubes)
+- [ ] animations for when we hover the New Roll button
+
+Long Term:
 - [ ] validate words against dictionary
 - [ ] animate die roll
+- [ ] change url to not be on params, just from the page (hard in Gatsby, would revert to React?)

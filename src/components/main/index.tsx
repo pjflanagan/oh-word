@@ -2,7 +2,7 @@ import React, { FC, useState, useEffect } from 'react';
 import { useQueryParam, StringParam } from "use-query-params";
 
 import { makeTilesFromTileString, Game, TileType, Tile, CopyTypeEnum, makeTileString, EmptyTile } from 'models';
-import { Container, Burger, Bun } from 'elements';
+import { Container, Burger, Bun, Popup, usePopup } from 'elements';
 
 import { Dock } from './dock';
 import { Header } from './header';
@@ -11,6 +11,7 @@ import * as Style from './style.module.scss';
 
 const MainComponent: FC = () => {
 
+  const [isOpen, message, sendPopup] = usePopup();
   const [tilesQueryParam, setTilesQueryParam] = useQueryParam('tiles', StringParam);
   const [tiles, setTiles] = useState<TileType[]>([]);
   const [dockTileId, setDockTileId] = useState<number>(-1);
@@ -22,8 +23,8 @@ const MainComponent: FC = () => {
     setTiles(newTiles);
   }
 
-  const setURLParams = async (copyType: CopyTypeEnum = 'SCORE') => {
-    setTilesQueryParam(makeTileString(copyType, tiles));
+  const setURLParams = () => {
+    setTilesQueryParam(makeTileString('SCORE', tiles));
   }
 
   useEffect(() => {
@@ -52,14 +53,15 @@ const MainComponent: FC = () => {
   }
 
   const copyURL = (copyType: CopyTypeEnum) => {
-    if (copyType === 'SCORE' && dockTileId !== -1) {
-      // if you wanna share score and the selected tile is -1, it wont work
-      return;
+    let workingCopyType = copyType;
+    if (dockTileId !== -1) {
+      // if you wanna share score and the selected tile is -1, use
+      workingCopyType = 'ROLL';
     }
-    setURLParams(copyType).then(function () {
-      navigator.clipboard.writeText(window.location.toString());
-      alert('URL Copied');
-    });
+    const url = `${window.location.origin}?tiles=${makeTileString(workingCopyType, tiles)}`;
+    console.log(url);
+    navigator.clipboard.writeText(url);
+    sendPopup('URL Copied');
   }
 
   const getDockTile = (): TileType => {
@@ -67,11 +69,20 @@ const MainComponent: FC = () => {
   }
 
   const replace = (selectedTile: TileType) => {
-    let newTiles = tiles.filter(t => t.id !== selectedTile.id);
-    newTiles = [...newTiles, Tile.makeUnplacedTile(selectedTile)]
+    // filter the selected tile out
+    let newTiles: TileType[] = [...tiles];
+    if (selectedTile.id !== -1) {
+      // if there is a selected tile
+      newTiles = newTiles.filter(t => t.id !== selectedTile.id);
+      // replace the tile with an unplaced one
+      newTiles = [...newTiles, Tile.makeUnplacedTile(selectedTile)];
+    }
     if (dockTileId !== -1) {
+      // if there is a tile in the dock
       const dockTile = getDockTile();
-      newTiles = tiles.filter(t => t.id !== dockTileId);
+      // filter the dock tile from tiles
+      newTiles = newTiles.filter(t => t.id !== dockTileId);
+      // make a newly placed tile and put it in the array
       const newlyPlacedTile = Tile.makePlacedTile(dockTile, { row: selectedTile.row, col: selectedTile.col });
       newTiles = [...newTiles, newlyPlacedTile];
     }
@@ -85,6 +96,7 @@ const MainComponent: FC = () => {
 
   return (
     <main className={Style.app}>
+      <Popup isOpen={isOpen}>{message}</Popup>
       <Container>
         <Bun>
           <Header

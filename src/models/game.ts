@@ -5,7 +5,7 @@ export type GridType = TileType[][];
 
 export const CUBE_COUNT = CUBES.length;
 
-const placeTilesRandomly = (tiles: TileType[]): TileType[] => {
+export const placeTilesRandomly = (tiles: TileType[]): TileType[] => {
   const grid = Game.makeDefaultGrid();
   const newTiles: TileType[] = [];
   tiles.forEach((tile: TileType) => {
