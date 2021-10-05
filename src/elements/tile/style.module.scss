@@ -26,17 +26,31 @@
     position: relative;
   }
 
+  &.dock {
+    .character {
+      text-align: center;
+      padding-top: 7px;
+      font-size: 20px;
+    }
+
+    .value {
+      font-size: 12px;
+      margin: -4px;
+    }
+  }
+
   .character {
     width: 100%;
-    text-align: center;
-    padding-top: 2px;
+    text-align: left;
+    padding: 1px 2px;
     font-size: 14px;
   }
 
   .value {
-    display: none;
     text-align: right;
     width: 100%;
+    font-size: 8px;
+    margin: -7px -1px;
   }
 }
 
@@ -44,12 +58,12 @@
 @media only screen and (min-width: 400px) {
   .tile {
     .character {
+      text-align: center;
       padding-top: 4px;
       font-size: 14px;
     }
 
     .value {
-      display: block;
       font-size: 8px;
       margin: -6px -4px;
     }

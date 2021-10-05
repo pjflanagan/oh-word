@@ -10,13 +10,15 @@ type TileProps = {
   tile: TileType;
   onMouseOver?: () => void;
   selectable: boolean;
+  dock?: boolean;
 }
 
 export const Tile: FC<TileProps> = ({
   tile,
   onClick,
   onMouseOver,
-  selectable
+  selectable,
+  dock
 }) => {
   const [deg, setDeg] = useState<number>(0);
 
@@ -37,6 +39,7 @@ export const Tile: FC<TileProps> = ({
       [Style.empty]: tile.id === -1,
       [Style.selectable]: selectable,
       [Style.real]: tile.id !== -1,
+      [Style.dock]: dock
     });
   }
 

@@ -20,6 +20,7 @@ const Dock: FC<DockProps> = ({ dockTile, newRoll, score }) => {
         <Tile
           tile={dockTile}
           selectable={dockTile.id !== -1}
+          dock
         />
       </div>
       <div className={Style.dockButtons}>
