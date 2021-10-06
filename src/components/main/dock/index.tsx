@@ -1,7 +1,6 @@
-import React, { FC, useState, useEffect } from 'react';
-import classNames from 'classnames';
+import React, { FC } from 'react';
 
-import { TileType, CopyTypeEnum } from 'models';
+import { TileType, isSet } from 'models';
 import { Tile, Button } from 'elements';
 
 import * as Style from './style.module.scss';
@@ -19,7 +18,7 @@ const Dock: FC<DockProps> = ({ dockTile, newRoll, score }) => {
       <div className={Style.dockTile}>
         <Tile
           tile={dockTile}
-          selectable={dockTile.id !== -1}
+          selectable={isSet(dockTile.id)}
           dock
         />
       </div>

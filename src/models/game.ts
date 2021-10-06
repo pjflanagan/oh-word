@@ -1,5 +1,5 @@
 
-import { Alphabet, CUBES, rollCube, Cube, TileType, Tile, getScore } from '.';
+import { Alphabet, CUBES, rollCube, Cube, TileType, Tile, getScore, isUnset } from '.';
 
 export type GridType = TileType[][];
 
@@ -13,7 +13,7 @@ export const placeTilesRandomly = (tiles: TileType[]): TileType[] => {
     while (!placed) {
       const row = Math.floor(Math.random() * CUBE_COUNT);
       const col = Math.floor(Math.random() * CUBE_COUNT);
-      if (grid[row][col].id === -1) {
+      if (isUnset(grid[row][col].id)) {
         grid[row][col] = tile;
         const newTile = Tile.makePlacedTile(tile, { row, col });
         newTiles.push(newTile);
@@ -26,7 +26,7 @@ export const placeTilesRandomly = (tiles: TileType[]): TileType[] => {
 
 export const Game = {
 
-  makeRollString: () => {
+  makeRollString: (): Alphabet[] => {
     const roll: Alphabet[] = [];
     // if there is no rollString, then make one
     CUBES.forEach((cube: Cube) => {
@@ -35,7 +35,7 @@ export const Game = {
     return roll;
   },
 
-  makeTiles: (roll: Alphabet[]) => {
+  makeTiles: (roll: Alphabet[]): TileType[] => {
     const tiles = [];
     for (let i = 0; i < roll.length; i++) {
       tiles.push(Tile.makeTile({ id: i, character: roll[i] }))
@@ -54,7 +54,7 @@ export const Game = {
     return grid;
   },
 
-  makeGridFromTiles: (tiles: TileType[]) => {
+  makeGridFromTiles: (tiles: TileType[]): GridType => {
     const grid = Game.makeDefaultGrid();
     tiles.forEach((tile: TileType) => {
       if (Tile.isPlaced(tile)) {

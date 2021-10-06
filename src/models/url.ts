@@ -1,16 +1,16 @@
-import { Alphabet, TileType, Tile, CUBE_COUNT, placeTilesRandomly } from '.';
+import { Alphabet, TileType, Tile, CUBE_COUNT, placeTilesRandomly, UNSET, isUnset } from '.';
 
 export type CopyTypeEnum = 'ROLL' | 'SCORE';
 
 function pad(num: number) {
-  var s = "0" + num;
+  const s = '0' + num;
   return s.substr(s.length - 2);
 }
 
 export const makeTileString = (mode: CopyTypeEnum, tiles: TileType[]): string => {
   return tiles.map(tile => {
-    const row = (mode === 'ROLL') ? -1 : pad(tile.row);
-    const col = (mode === 'ROLL') ? -1 : pad(tile.col);
+    const row = (mode === 'ROLL') ? UNSET : pad(tile.row);
+    const col = (mode === 'ROLL') ? UNSET : pad(tile.col);
     return `${tile.character}${row}${col}`;
   }).join('.');
 };
@@ -24,12 +24,12 @@ export const makeURLParamString = (mode: CopyTypeEnum, tiles: TileType[]): strin
 
 export const makeTilesFromTileString = (tiles: string): TileType[] => {
   const newTiles: TileType[] = [];
-  let modeRoll: boolean = false;
+  let modeRoll = false;
   tiles.split('.').forEach((tile: string, i: number) => {
     const character = tile[0] as Alphabet;
     const row = parseInt(tile[1] + tile[2]);
     const col = parseInt(tile[3] + tile[4]);
-    if (row === -1 || col === -1) {
+    if (isUnset(row) || isUnset(col)) {
       modeRoll = true;
     }
     newTiles.push(Tile.makeTile({ id: i, character, row, col }));

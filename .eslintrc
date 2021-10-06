@@ -19,7 +19,11 @@
         "identifiers": true,
         "templates": true,
         "lang": "en_US",
-        "skipWords": [],
+        "skipWords": [
+          "untracked",
+          "Enum",
+          "num"
+        ],
         "skipIfMatch": [
           "http://[^s]*",
           "^[-\\w]+\/[-\\w\\.]+$"

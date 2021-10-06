@@ -1,7 +1,7 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useState, useEffect, useMemo } from 'react';
 import { useQueryParam, StringParam } from "use-query-params";
 
-import { makeTilesFromTileString, Game, TileType, Tile, CopyTypeEnum, makeTileString, EmptyTile } from 'models';
+import { makeTilesFromTileString, Game, TileType, Tile, CopyTypeEnum, makeTileString, EmptyTile, UNSET, isSet, isUnset } from 'models';
 import { Container, Burger, Bun, Popup, usePopup } from 'elements';
 
 import { Dock } from './dock';
@@ -14,12 +14,12 @@ const MainComponent: FC = () => {
   const [isOpen, message, sendPopup] = usePopup();
   const [tilesQueryParam, setTilesQueryParam] = useQueryParam('tiles', StringParam);
   const [tiles, setTiles] = useState<TileType[]>([]);
-  const [dockTileId, setDockTileId] = useState<number>(-1);
+  const [dockTileId, setDockTileId] = useState<number>(UNSET);
 
   const newRoll = () => {
     const roll = Game.makeRollString();
     const newTiles = Game.makeTiles(roll);
-    setDockTileId(-1);
+    setDockTileId(UNSET);
     setTiles(newTiles);
   }
 
@@ -54,12 +54,11 @@ const MainComponent: FC = () => {
 
   const copyURL = (copyType: CopyTypeEnum) => {
     let workingCopyType = copyType;
-    if (dockTileId !== -1) {
-      // if you wanna share score and the selected tile is -1, use
+    if (isSet(dockTileId)) {
+      // if you wanna share score and the selected tile is UNSET, use
       workingCopyType = 'ROLL';
     }
     const url = `${window.location.origin}?tiles=${makeTileString(workingCopyType, tiles)}`;
-    console.log(url);
     navigator.clipboard.writeText(url);
     sendPopup('URL Copied');
   }
@@ -69,15 +68,18 @@ const MainComponent: FC = () => {
   }
 
   const replace = (selectedTile: TileType) => {
+    if (isUnset(dockTileId) && isUnset(selectedTile.id)) {
+      return;
+    }
     // filter the selected tile out
     let newTiles: TileType[] = [...tiles];
-    if (selectedTile.id !== -1) {
+    if (isSet(selectedTile.id)) {
       // if there is a selected tile
       newTiles = newTiles.filter(t => t.id !== selectedTile.id);
       // replace the tile with an unplaced one
       newTiles = [...newTiles, Tile.makeUnplacedTile(selectedTile)];
     }
-    if (dockTileId !== -1) {
+    if (isSet(dockTileId)) {
       // if there is a tile in the dock
       const dockTile = getDockTile();
       // filter the dock tile from tiles
@@ -92,7 +94,8 @@ const MainComponent: FC = () => {
 
   const dockTile = getDockTile();
   const grid = makeGrid();
-  const score = getScore();
+
+  const score = useMemo(getScore, [tiles]);
 
   return (
     <main className={Style.app}>

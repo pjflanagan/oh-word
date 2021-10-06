@@ -1,8 +1,7 @@
 
-import React, { FC, useEffect, useState } from 'react';
-import classNames from 'classnames';
+import React, { FC } from 'react';
 
-import { GridType, TileType, Tile } from 'models';
+import { GridType, TileType, isSet, isUnset } from 'models';
 import { Tile as TileComponent } from 'elements';
 
 import * as Style from './style.module.scss';
@@ -32,7 +31,7 @@ const Grid: FC<GridProps> = ({
                       <TileComponent
                         tile={tile}
                         onClick={() => selectTile(tile)}   // TODO: empty grid tile on hover display dockTile info
-                        selectable={(tile.id === -1 && dockTile.id !== -1) || tile.id !== -1}
+                        selectable={(isUnset(tile.id) && isSet(dockTile.id)) || isSet(tile.id)}
                       />
                     </div>
                   ))

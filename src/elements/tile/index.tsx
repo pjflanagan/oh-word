@@ -1,7 +1,7 @@
 import React, { FC, useState, useEffect } from 'react';
 import classNames from 'classnames';
 
-import { Tile as TileHelper, TileType } from 'models';
+import { Tile as TileHelper, TileType, isSet, isUnset } from 'models';
 
 import * as Style from './style.module.scss';
 
@@ -23,7 +23,7 @@ export const Tile: FC<TileProps> = ({
   const [deg, setDeg] = useState<number>(0);
 
   useEffect(() => {
-    if (tile.id !== -1) {
+    if (isSet(tile.id)) {
       const deg = Math.random() * 6 - 3;
       setDeg(deg);
     }
@@ -36,9 +36,9 @@ export const Tile: FC<TileProps> = ({
 
   const getTileClassName = () => {
     return classNames(Style.tile, {
-      [Style.empty]: tile.id === -1,
+      [Style.empty]: isUnset(tile.id),
       [Style.selectable]: selectable,
-      [Style.real]: tile.id !== -1,
+      [Style.real]: isSet(tile.id),
       [Style.dock]: dock
     });
   }

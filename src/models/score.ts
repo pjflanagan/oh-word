@@ -1,4 +1,4 @@
-import { GridType, TileType, EmptyTile, Tile, CUBE_COUNT, Game } from '.';
+import { GridType, TileType, EmptyTile, Tile, CUBE_COUNT, Game, isSet, isUnset } from '.';
 
 type ClusterType = number[];
 
@@ -14,22 +14,24 @@ const getLargestCluster = (grid: GridType, tiles: TileType[]): ClusterType => {
 };
 
 const makeClusters = function (grid: GridType, tiles: TileType[]): ClusterType[] {
-  let untrackedTiles = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
-  let loopLimit = 0; // TODO: remove me
+  let untrackedTileIndicies = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
   const clusters = [];
-  while (untrackedTiles.length > 0 && loopLimit < CUBE_COUNT) {
-    loopLimit++;
-    const tile = tiles[untrackedTiles[0]];
+  while (untrackedTileIndicies.length > 0) {
+    const tile = tiles.find(t => t.id === untrackedTileIndicies[0]);
+    if (!tile) {
+      untrackedTileIndicies.shift();
+      break;
+    }
     if (!Tile.isPlaced(tile)) {
       // if it hasn't been played then it can be considered an individual cluster
       clusters.push([tile.id]);
-      untrackedTiles.shift();
+      untrackedTileIndicies.shift();
     } else {
       // otherwise it is on the board, so try and make a cluster from it
       let cluster = makeCluster(grid, tile, []);
       cluster = Array.from(new Set(cluster));
       clusters.push(cluster);
-      untrackedTiles = untrackedTiles.filter(id => !cluster.includes(id));
+      untrackedTileIndicies = untrackedTileIndicies.filter(id => !cluster.includes(id));
     }
   }
   return clusters;
@@ -37,7 +39,7 @@ const makeClusters = function (grid: GridType, tiles: TileType[]): ClusterType[]
 
 const makeCluster = function (grid: GridType, tile: TileType, cluster: ClusterType): ClusterType {
   // if there is no id, then this is not a tile
-  if (tile.id === -1 || tile.character === '') {
+  if (isUnset(tile.id) || tile.character === '') {
     return [];
   }
 
@@ -67,7 +69,7 @@ const makeCluster = function (grid: GridType, tile: TileType, cluster: ClusterTy
   return cluster;
 }
 
-export const getScore = (tiles: TileType[]) => {
+export const getScore = (tiles: TileType[]): number => {
   const grid = Game.makeGridFromTiles(tiles);
   const largestCluster = getLargestCluster(grid, tiles);
   let scoreLargestCluster = 0;
@@ -82,10 +84,10 @@ export const getScore = (tiles: TileType[]) => {
       }
 
       // get the tiles around it
-      const up = (tile.row > 0 && grid[tile.row - 1][tile.col].id !== -1) ? true : false;
-      const down = (tile.row < 13 && grid[tile.row + 1][tile.col].id !== -1) ? true : false;
-      const left = (tile.col > 0 && grid[tile.row][tile.col - 1].id !== -1) ? true : false;
-      const right = (tile.col < 13 && grid[tile.row][tile.col + 1].id !== -1) ? true : false;
+      const up = (tile.row > 0 && isSet(grid[tile.row - 1][tile.col].id)) ? true : false;
+      const down = (tile.row < 13 && isSet(grid[tile.row + 1][tile.col].id)) ? true : false;
+      const left = (tile.col > 0 && isSet(grid[tile.row][tile.col - 1].id)) ? true : false;
+      const right = (tile.col < 13 && isSet(grid[tile.row][tile.col + 1].id)) ? true : false;
 
       // if it is in a up down word, add it's score
       if (up || down) {

@@ -1,5 +1,5 @@
 
-import { Game } from '.';
+import { UNSET } from '.';
 
 export type Alphabet = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I' | 'J' | 'K' | 'L' | 'M' | 'N' | 'O' | 'P' | 'Q' | 'R' | 'S' | 'T' | 'U' | 'V' | 'W' | 'X' | 'Y' | 'Z' | '_' | '';
 
@@ -55,30 +55,30 @@ const VALUES = {
 
 export const Tile = {
   makeTile: (tile: TileConstructorType): TileType => {
-    const id = (tile.id !== undefined) ? tile.id : -1; // id in roll, -1 means not set (empty grid spot)
+    const id = (tile.id !== undefined) ? tile.id : UNSET; // id in roll, UNSET means not set (empty grid spot)
     const character = (tile.character !== undefined) ? tile.character : ''; // a character object with letter and value
     const value = VALUES[character];
-    const row = (tile.row !== undefined) ? tile.row : -1;
-    const col = (tile.col !== undefined) ? tile.col : -1;
+    const row = (tile.row !== undefined) ? tile.row : UNSET;
+    const col = (tile.col !== undefined) ? tile.col : UNSET;
     return { id, character, value, row, col };
   },
-  isPlaced: (tile: TileType) => {
-    return tile.row !== -1 && tile.col !== -1;
+  isPlaced: (tile: TileType): boolean => {
+    return tile.row !== UNSET && tile.col !== UNSET;
   },
   getDisplayCharacter: (tile: TileType): string => {
     return tile.character === '_' ? '' : tile.character;
   },
-  getDisplayValue: (tile: TileType) => {
+  getDisplayValue: (tile: TileType): string | number => {
     return tile.value === 0 ? '' : tile.value;
   },
-  makeUnplacedTile: (tile: TileType) => {
+  makeUnplacedTile: (tile: TileType): TileType => {
     return {
       ...tile,
-      row: -1,
-      col: -1,
+      row: UNSET,
+      col: UNSET,
     };
   },
-  makePlacedTile: (tile: TileType, { row, col }: GridCoords) => {
+  makePlacedTile: (tile: TileType, { row, col }: GridCoords): TileType => {
     return {
       ...tile,
       row,

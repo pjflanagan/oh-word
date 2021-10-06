@@ -1,3 +1,5 @@
+
+export * from './util';
 export * from './cube';
 export * from './game';
 export * from './tile';
