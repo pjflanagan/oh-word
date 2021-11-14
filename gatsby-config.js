@@ -35,5 +35,16 @@ module.exports = {
         include_favicon: false,
       },
     },
+    {
+      resolve: `gatsby-plugin-google-gtag`,
+      options: {
+        trackingIds: [
+          "G-CNFGV4ZHRG",
+        ],
+        pluginConfig: {
+          head: false,
+        },
+      },
+    },
   ],
 };
