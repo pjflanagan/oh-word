@@ -1,9 +1,9 @@
 
-const TITLE = 'Crossword Cubes';
+const TITLE = 'Oh Word';
 
 module.exports = {
   siteMetadata: {
-    siteUrl: `https://crosswordcubes.flanny.app`,
+    siteUrl: `https://ohword.flanny.app`,
     title: TITLE,
   },
   plugins: [

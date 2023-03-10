@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 
-import { CopyTypeEnum } from 'models';
+import { URLMode } from 'models';
 import { Button } from 'elements';
 
 import * as Style from './style.module.scss';
 
 type HeaderProps = {
-  copyURL: (copyType: CopyTypeEnum) => void;
+  copyURL: (copyType: URLMode) => void;
 }
 
 const Header: FC<HeaderProps> = ({
@@ -15,16 +15,16 @@ const Header: FC<HeaderProps> = ({
   return (
     <div className={Style.header}>
       <div className={Style.title}>
-        {'Crossword Cubes'}
+        {'Oh Word!?'}
       </div>
       <div className={Style.buttonHolder}>
         <Button
-          onClick={() => copyURL('ROLL')}
+          onClick={() => copyURL(URLMode.ROLL)}
           icon={'Share'}
           label="Roll"
         />
         <Button
-          onClick={() => copyURL('SCORE')}
+          onClick={() => copyURL(URLMode.SCORE)}
           icon={'Share'}
           label="Score"
         />

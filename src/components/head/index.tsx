@@ -1,9 +1,9 @@
 import React from 'react';
 import { Helmet } from "react-helmet";
 
-const TITLE = 'Crossword Cubes';
+const TITLE = 'Oh Word!?';
 const DESCRIPTION = 'Can you beat my score?';
-const ROOT = "https://crosswordcubes.flanny.app";
+const ROOT = "https://ohword.flanny.app";
 const IMG = `${ROOT}/img/social/social.png`;
 const IMG_TW = `${ROOT}/img/social/social-tw.png`;
 const FAVICON_32 = `${ROOT}/img/logo/favicon.png`;
