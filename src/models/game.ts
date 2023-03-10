@@ -1,5 +1,5 @@
 
-import { Grid, Alphabet, CUBES, Tile, isUnset, makeCubeRollString, makeDefaultGrid, getClusterScore, makeGridFromTiles, GRID_SIZE } from '.';
+import { Grid, Alphabet, Tile, isUnset, makeRandomLetterSet, makeDefaultGrid, getClusterScore, makeGridFromTiles, GRID_SIZE } from '.';
 
 export const placeTilesRandomly = (tiles: Tile[]): Tile[] => {
   const grid = makeDefaultGrid();
@@ -22,9 +22,8 @@ export const placeTilesRandomly = (tiles: Tile[]): Tile[] => {
 
 export const Game = {
 
-  makeRollString: (): Alphabet[] => {
-    // TODO: make my own version
-    return makeCubeRollString();
+  makeRandomLetterSet: (): Alphabet[] => {
+    return makeRandomLetterSet();
   },
 
   makeTiles: (roll: Alphabet[]): Tile[] => {

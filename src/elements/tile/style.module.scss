@@ -10,11 +10,20 @@
   box-shadow: 1px 1px 0 #000;
 
   &.empty {
-    background: #0003;
-    border-radius: 50%;
-    transform: scale(0.1) !important;
+    background: #0000;
     border: 0;
     box-shadow: 0 0 0;
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      background: #0002;
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      position: relative;
+      transform: translate(-50%, -50%);
+    }
   }
 
   &.selectable {
@@ -23,6 +32,9 @@
 
   &.empty.selectable:hover {
     background: #0002;
+    .dot {
+      background: #0000;
+    }
   }
 
   &.real.selectable:hover {
@@ -36,6 +48,10 @@
     background: #0001;
     transform: scale(1) !important;
     border-radius: 3px;
+
+    .dot {
+      background-color: #0000;
+    }
 
     .character {
       text-align: center;

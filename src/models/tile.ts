@@ -1,7 +1,7 @@
 
 import { UNSET } from '.';
 
-export type Alphabet = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I' | 'J' | 'K' | 'L' | 'M' | 'N' | 'O' | 'P' | 'Q' | 'R' | 'S' | 'T' | 'U' | 'V' | 'W' | 'X' | 'Y' | 'Z' | '_' | '';
+export type Alphabet = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I' | 'J' | 'K' | 'L' | 'M' | 'N' | 'O' | 'P' | 'Q' | 'R' | 'S' | 'T' | 'U' | 'V' | 'W' | 'X' | 'Y' | 'Z' | '';
 
 type TileConstructorType = {
   id?: number;
@@ -23,27 +23,26 @@ const VALUES = {
   'D': 2,
   'E': 1,
   'F': 4,
-  'G': 2,
+  'G': 3,
   'H': 4,
   'I': 1,
   'J': 8,
-  'K': 5,
-  'L': 1,
-  'M': 3,
-  'N': 1,
-  'O': 1,
+  'K': 6,
+  'L': 2,
+  'M': 4,
+  'N': 2,
+  'O': 2,
   'P': 3,
   'Q': 10,
   'R': 1,
   'S': 1,
   'T': 1,
-  'U': 1,
-  'V': 4,
-  'W': 4,
+  'U': 2,
+  'V': 5,
+  'W': 6,
   'X': 8,
   'Y': 4,
   'Z': 10,
-  '_': 0,
   '': 0
 };
 
@@ -72,7 +71,7 @@ export class Tile {
   }
 
   getDisplayCharacter(): string {
-    return this.character === '_' ? '' : this.character;
+    return this.character;
   }
 
   getDisplayValue(): string | number {

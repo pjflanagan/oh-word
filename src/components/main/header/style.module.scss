@@ -6,9 +6,11 @@
   .title {
     width: 50%;
     padding: 12px 4px;
-    font-size: 28px;
-    color: #7e3aa8;
+    font-size: 36px;
+    color: #9144c0;
     font-family: 'Ranchers', sans-serif;
+    text-shadow: 1px 1px 0 #000;
+    -webkit-text-stroke: 3px #000;
   }
 
   .button-holder {
@@ -31,7 +33,7 @@
   .header {
     .title {
       padding: 22px 0px;
-      font-size: 38px;
+      font-size: 48px;
     }
   }
 }

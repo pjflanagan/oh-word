@@ -12,21 +12,20 @@ import * as Style from './style.module.scss';
 const MainComponent: FC = () => {
 
   const [isOpen, message, sendPopup] = usePopup();
-  const [tilesQueryParam, setTilesQueryParam] = useQueryParam('tiles', StringParam);
+  const [tilesQueryParam, setTilesQueryParam] = useQueryParam('t', StringParam);
   const [tiles, setTiles] = useState<Tile[]>([]);
   const [dockTileId, setDockTileId] = useState<number>(UNSET);
 
-  console.log(tiles);
-
   const newRoll = () => {
-    const roll = Game.makeRollString();
-    const newTiles = Game.makeTiles(roll);
+    const letterSet = Game.makeRandomLetterSet();
+    const newTiles = Game.makeTiles(letterSet);
     setDockTileId(UNSET);
     setTiles(newTiles);
   }
 
   const setURLParams = () => {
-    setTilesQueryParam(makeTileString(URLMode.SCORE, tiles));
+    // TODO: fix this
+    // setTilesQueryParam(makeTileString(URLMode.SCORE, tiles));
   }
 
   useEffect(() => {
@@ -60,7 +59,7 @@ const MainComponent: FC = () => {
       // if you wanna share score and the selected tile is UNSET, use
       workingCopyType = URLMode.ROLL;
     }
-    const url = `${window.location.origin}?tiles=${makeTileString(workingCopyType, tiles)}`;
+    const url = `${window.location.origin}?t=${makeTileString(workingCopyType, tiles)}`;
     navigator.clipboard.writeText(url);
     sendPopup('URL Copied');
   }
@@ -73,6 +72,7 @@ const MainComponent: FC = () => {
     if (isUnset(dockTileId) && isUnset(selectedTile.id)) {
       return;
     }
+    const { row, col } = selectedTile;
     // filter the selected tile out
     let newTiles: Tile[] = [...tiles];
     if (isSet(selectedTile.id)) {
@@ -87,7 +87,7 @@ const MainComponent: FC = () => {
       // filter the dock tile from tiles
       newTiles = newTiles.filter(t => t.id !== dockTileId);
       // make a newly placed tile and put it in the array
-      const newlyPlacedTile = dockTile.placeTile({ row: selectedTile.row, col: selectedTile.col });
+      const newlyPlacedTile = dockTile.placeTile({ row, col });
       newTiles = [...newTiles, newlyPlacedTile];
     }
     setTiles(newTiles);

@@ -50,6 +50,9 @@ export const TileElement: FC<TileElementProps> = ({
       onClick={onClick}
       onMouseOver={onMouseOver}
     >
+      {
+        isUnset(tile.id) && <div className={Style.dot} />
+      }
       <div className={Style.character}>{tile.getDisplayCharacter()}</div>
       <div className={Style.value}>{tile.getDisplayValue()}</div>
     </div>
