@@ -1,5 +1,5 @@
 
-import { Grid, Alphabet, Tile, isUnset, makeRandomLetterSet, makeDefaultGrid, getClusterScore, makeGridFromTiles, GRID_SIZE } from '.';
+import { Grid, Alphabet, Tile, isUnset, makeRandomLetterSet, makeDefaultGrid, Score, makeGridFromTiles, GRID_SIZE, getScore, NO_SCORE } from '.';
 
 export const placeTilesRandomly = (tiles: Tile[]): Tile[] => {
   const grid = makeDefaultGrid();
@@ -38,11 +38,10 @@ export const Game = {
     return makeGridFromTiles(tiles);
   },
 
-  getScore: (tiles: Tile[]): number => {
+  getScore: (tiles: Tile[]): Score => {
     if (!tiles || tiles.length === 0) {
-      return 0;
+      return NO_SCORE;
     }
-    const score = getClusterScore(tiles);
-    return Math.max(score, 0);
+    return getScore(tiles);
   }
 }

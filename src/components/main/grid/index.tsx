@@ -10,12 +10,14 @@ type GridComponentProps = {
   grid: Grid;
   dockTile: Tile;
   selectTile: (tile: Tile) => void;
+  clusterTileIds: number[];
 }
 
 const GridComponent: FC<GridComponentProps> = ({
   grid,
   dockTile,
-  selectTile
+  selectTile,
+  clusterTileIds
 }) => {
 
   return (
@@ -32,6 +34,7 @@ const GridComponent: FC<GridComponentProps> = ({
                         tile={tile}
                         onClick={() => selectTile(tile)}   // TODO: empty grid tile on hover display dockTile info
                         selectable={(isUnset(tile.id) && isSet(dockTile.id)) || isSet(tile.id)}
+                        inCluster={clusterTileIds.includes(tile.id)}
                       />
                     </div>
                   ))

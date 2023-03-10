@@ -44,9 +44,16 @@
     position: relative;
   }
 
+  &.cluster {
+    background: #acef82;
+  }
+
+  &.error {
+    background: #f09a75;
+  }
+
   &.dock {
-    background: #0001;
-    transform: scale(1) !important;
+    transform: scale(1.2) !important;
     border-radius: 3px;
 
     .dot {

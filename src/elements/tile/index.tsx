@@ -11,6 +11,7 @@ type TileElementProps = {
   onMouseOver?: () => void;
   selectable: boolean;
   dock?: boolean;
+  inCluster: boolean;
 }
 
 export const TileElement: FC<TileElementProps> = ({
@@ -18,7 +19,8 @@ export const TileElement: FC<TileElementProps> = ({
   onClick,
   onMouseOver,
   selectable,
-  dock
+  dock,
+  inCluster
 }) => {
   const [deg, setDeg] = useState<number>(0);
 
@@ -39,7 +41,8 @@ export const TileElement: FC<TileElementProps> = ({
       [Style.empty]: isUnset(tile.id),
       [Style.selectable]: selectable,
       [Style.real]: isSet(tile.id),
-      [Style.dock]: dock
+      [Style.dock]: dock,
+      [Style.cluster]: inCluster
     });
   }
 
