@@ -5,19 +5,20 @@ import { Grid, Tile, isSet, isUnset } from 'models';
 import { TileElement } from 'elements';
 
 import * as Style from './style.module.scss';
+import { Score } from 'models/score';
 
 type GridComponentProps = {
   grid: Grid;
   dockTile: Tile;
   selectTile: (tile: Tile) => void;
-  clusterTileIds: number[];
+  score: Score;
 }
 
 const GridComponent: FC<GridComponentProps> = ({
   grid,
   dockTile,
   selectTile,
-  clusterTileIds
+  score
 }) => {
 
   return (
@@ -34,7 +35,9 @@ const GridComponent: FC<GridComponentProps> = ({
                         tile={tile}
                         onClick={() => selectTile(tile)}   // TODO: empty grid tile on hover display dockTile info
                         selectable={(isUnset(tile.id) && isSet(dockTile.id)) || isSet(tile.id)}
-                        inCluster={clusterTileIds.includes(tile.id)}
+                        inCluster={score.clusterTileIds.includes(tile.id)}
+                        horizontalWordScore={score.wordLengthScores.find(wls => wls.direction === 'horizontal' && wls.lastLetterTile === tile.id)?.score}
+                        verticalWordScore={score.wordLengthScores.find(wls => wls.direction === 'vertical' && wls.lastLetterTile === tile.id)?.score}
                       />
                     </div>
                   ))

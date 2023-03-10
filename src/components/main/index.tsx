@@ -113,7 +113,7 @@ const MainComponent: FC = () => {
             grid={grid}
             dockTile={dockTile}
             selectTile={replace}
-            clusterTileIds={score.clusterTileIds}
+            score={score}
           />
         </Burger>
         <Bun>

@@ -26,6 +26,29 @@
     }
   }
 
+  .wordScore {
+    position: absolute;
+    background: #d53b3b;
+    border-radius: 50%;
+    padding: 2px 6px;
+    color: #fff;
+    font-weight: bold;
+    border: 3px solid #000;
+    font-size: 12px;
+
+    &.horizontal {
+      left: 100%;
+      top: 20%;
+      transform: translate(-30%, -50%);
+    }
+
+    &.vertical {
+      top: 100%;
+      left: 20%;
+      transform: translate(-50%, -30%);
+    }
+  }
+
   &.selectable {
     cursor: pointer;
   }
@@ -54,37 +77,30 @@
 
   &.dock {
     transform: scale(1.2) !important;
-    border-radius: 3px;
 
     .dot {
       background-color: #0000;
     }
-
-    .character {
-      text-align: center;
-      padding-top: 7px;
-      font-size: 20px;
-    }
-
-    .value {
-      font-size: 12px;
-      margin: -4px;
-    }
   }
 
   .character {
+    position: absolute;
+    top: 50%;
     width: 100%;
-    text-align: left;
-    padding: 1px 2px;
-    font-size: 16px;
+    text-align: center;
     font-weight: bold;
+    font-size: 16px;
+    transform: translateY(-50%);
   }
 
   .value {
+    position: absolute;
     text-align: right;
-    width: 100%;
     font-size: 12px;
-    margin: -7px -1px;
+    top: 100%;
+    left: 100%;
+    transform: translate(-110%, -110%);
+    color: #0008;
   }
 }
 
@@ -92,30 +108,24 @@
 @media only screen and (min-width: 400px) {
   .tile {
     .character {
-      text-align: center;
-      padding-top: 4px;
       font-size: 22px;
     }
 
     .value {
       font-size: 14px;
-      margin: -6px -4px;
     }
   }
 }
 
 
 @media only screen and (min-width: 500px) {
-
   .tile {
     .character {
-      padding-top: 6px;
       font-size: 24px;
     }
 
     .value {
       font-size: 14px;
-      margin: -8px -4px;
     }
 
   }
@@ -123,14 +133,23 @@
 
 @media only screen and (min-width: 600px) {
   .tile {
+
+    .wordScore {
+      font-size: 14px;
+      &.horizontal {
+        top: 50%;
+      }
+      &.vertical {
+        left: 50%;
+      }
+    }
+
     .character {
-      padding-top: 7px;
       font-size: 28px;
     }
 
     .value {
       font-size: 16px;
-      margin: -4px;
     }
   }
 }

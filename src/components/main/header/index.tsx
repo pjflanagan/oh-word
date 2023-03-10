@@ -20,12 +20,12 @@ const Header: FC<HeaderProps> = ({
       <div className={Style.buttonHolder}>
         <Button
           onClick={() => copyURL(URLMode.ROLL)}
-          icon={'Share'}
+          icon={'share'}
           label="Tiles"
         />
         <Button
           onClick={() => copyURL(URLMode.SCORE)}
-          icon={'Share'}
+          icon={'share'}
           label="Words"
         />
       </div>

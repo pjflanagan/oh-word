@@ -26,13 +26,13 @@ const Dock: FC<DockProps> = ({ dockTile, shuffle, score }) => {
       <div className={Style.dockButtons}>
         <Button
           onClick={shuffle}
-          icon="Play"
+          icon="calendar"
           label="Daily"
         />
         <Button
           onClick={shuffle}
-          icon="New"
-          label="Shuffle"
+          icon="shuffle"
+          label="Random"
         />
         <Button
           disabled

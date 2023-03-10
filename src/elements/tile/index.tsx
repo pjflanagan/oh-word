@@ -12,6 +12,8 @@ type TileElementProps = {
   selectable: boolean;
   dock?: boolean;
   inCluster: boolean;
+  horizontalWordScore?: number;
+  verticalWordScore?: number;
 }
 
 export const TileElement: FC<TileElementProps> = ({
@@ -20,7 +22,9 @@ export const TileElement: FC<TileElementProps> = ({
   onMouseOver,
   selectable,
   dock,
-  inCluster
+  inCluster,
+  horizontalWordScore,
+  verticalWordScore
 }) => {
   const [deg, setDeg] = useState<number>(0);
 
@@ -55,6 +59,12 @@ export const TileElement: FC<TileElementProps> = ({
     >
       {
         isUnset(tile.id) && <div className={Style.dot} />
+      }
+      {
+        horizontalWordScore && <div className={classNames(Style.wordScore, Style.horizontal)}>{horizontalWordScore}</div>
+      }
+      {
+        verticalWordScore && <div className={classNames(Style.wordScore, Style.vertical)}>{verticalWordScore}</div>
       }
       <div className={Style.character}>{tile.getDisplayCharacter()}</div>
       <div className={Style.value}>{tile.getDisplayValue()}</div>
