@@ -1,18 +1,28 @@
 
 import { Alphabet } from ".";
 
+// TODO: turn this into one method of generating rolls
+// but then come up with my own
 // Cube contains all the letters on a cube and can be rolled
 // this DOES NOT retain which letter is currently facing up
 
-export type Cube = Alphabet[];
+type Cube = Alphabet[];
 
-export const makeCube = (letters: string): Cube => {
+export function makeCubeRollString(): Alphabet[] {
+  const roll: Alphabet[] = [];
+  CUBES.forEach((cube: Cube) => {
+    roll.push(rollCube(cube));
+  });
+  return roll;
+}
+
+const makeCube = (letters: string): Cube => {
   return letters.split('').map(l => {
     return l as Alphabet;
   });
 }
 
-export const rollCube = (cube: Cube): Alphabet => {
+const rollCube = (cube: Cube): Alphabet => {
   return cube[
     Math.floor(Math.random() * cube.length)
   ];

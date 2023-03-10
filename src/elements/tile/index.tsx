@@ -1,19 +1,19 @@
 import React, { FC, useState, useEffect } from 'react';
 import classNames from 'classnames';
 
-import { Tile as TileHelper, TileType, isSet, isUnset } from 'models';
+import { Tile, isSet, isUnset } from 'models';
 
 import * as Style from './style.module.scss';
 
-type TileProps = {
+type TileElementProps = {
   onClick?: () => void;
-  tile: TileType;
+  tile: Tile;
   onMouseOver?: () => void;
   selectable: boolean;
   dock?: boolean;
 }
 
-export const Tile: FC<TileProps> = ({
+export const TileElement: FC<TileElementProps> = ({
   tile,
   onClick,
   onMouseOver,
@@ -50,8 +50,8 @@ export const Tile: FC<TileProps> = ({
       onClick={onClick}
       onMouseOver={onMouseOver}
     >
-      <div className={Style.character}>{TileHelper.getDisplayCharacter(tile)}</div>
-      <div className={Style.value}>{TileHelper.getDisplayValue(tile)}</div>
+      <div className={Style.character}>{tile.getDisplayCharacter()}</div>
+      <div className={Style.value}>{tile.getDisplayValue()}</div>
     </div>
   );
 }

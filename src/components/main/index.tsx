@@ -1,20 +1,22 @@
 import React, { FC, useState, useEffect, useMemo } from 'react';
 import { useQueryParam, StringParam } from "use-query-params";
 
-import { makeTilesFromTileString, Game, TileType, Tile, CopyTypeEnum, makeTileString, EmptyTile, UNSET, isSet, isUnset } from 'models';
+import { makeTilesFromTileString, Game, Tile, URLMode, makeTileString, EmptyTile, UNSET, isSet, isUnset } from 'models';
 import { Container, Burger, Bun, Popup, usePopup } from 'elements';
 
 import { Dock } from './dock';
 import { Header } from './header';
-import { Grid } from './grid';
+import { GridComponent } from './grid';
 import * as Style from './style.module.scss';
 
 const MainComponent: FC = () => {
 
   const [isOpen, message, sendPopup] = usePopup();
   const [tilesQueryParam, setTilesQueryParam] = useQueryParam('tiles', StringParam);
-  const [tiles, setTiles] = useState<TileType[]>([]);
+  const [tiles, setTiles] = useState<Tile[]>([]);
   const [dockTileId, setDockTileId] = useState<number>(UNSET);
+
+  console.log(tiles);
 
   const newRoll = () => {
     const roll = Game.makeRollString();
@@ -24,7 +26,7 @@ const MainComponent: FC = () => {
   }
 
   const setURLParams = () => {
-    setTilesQueryParam(makeTileString('SCORE', tiles));
+    setTilesQueryParam(makeTileString(URLMode.SCORE, tiles));
   }
 
   useEffect(() => {
@@ -52,32 +54,32 @@ const MainComponent: FC = () => {
     return Game.makeGridFromTiles(tiles);
   }
 
-  const copyURL = (copyType: CopyTypeEnum) => {
-    let workingCopyType = copyType;
+  const copyURL = (urlMode: URLMode) => {
+    let workingCopyType = urlMode;
     if (isSet(dockTileId)) {
       // if you wanna share score and the selected tile is UNSET, use
-      workingCopyType = 'ROLL';
+      workingCopyType = URLMode.ROLL;
     }
     const url = `${window.location.origin}?tiles=${makeTileString(workingCopyType, tiles)}`;
     navigator.clipboard.writeText(url);
     sendPopup('URL Copied');
   }
 
-  const getDockTile = (): TileType => {
-    return tiles.find(t => t.id === dockTileId) || EmptyTile;
+  const getDockTile = (): Tile => {
+    return tiles.find((t: Tile) => t.id === dockTileId) || EmptyTile;
   }
 
-  const replace = (selectedTile: TileType) => {
+  const replace = (selectedTile: Tile) => {
     if (isUnset(dockTileId) && isUnset(selectedTile.id)) {
       return;
     }
     // filter the selected tile out
-    let newTiles: TileType[] = [...tiles];
+    let newTiles: Tile[] = [...tiles];
     if (isSet(selectedTile.id)) {
       // if there is a selected tile
       newTiles = newTiles.filter(t => t.id !== selectedTile.id);
       // replace the tile with an unplaced one
-      newTiles = [...newTiles, Tile.makeUnplacedTile(selectedTile)];
+      newTiles = [...newTiles, selectedTile.unplaceTile()];
     }
     if (isSet(dockTileId)) {
       // if there is a tile in the dock
@@ -85,7 +87,7 @@ const MainComponent: FC = () => {
       // filter the dock tile from tiles
       newTiles = newTiles.filter(t => t.id !== dockTileId);
       // make a newly placed tile and put it in the array
-      const newlyPlacedTile = Tile.makePlacedTile(dockTile, { row: selectedTile.row, col: selectedTile.col });
+      const newlyPlacedTile = dockTile.placeTile({ row: selectedTile.row, col: selectedTile.col });
       newTiles = [...newTiles, newlyPlacedTile];
     }
     setTiles(newTiles);
@@ -107,7 +109,7 @@ const MainComponent: FC = () => {
           />
         </Bun>
         <Burger>
-          <Grid
+          <GridComponent
             grid={grid}
             dockTile={dockTile}
             selectTile={replace}

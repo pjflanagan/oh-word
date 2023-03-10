@@ -1,8 +1,6 @@
 import React, { FC, useState, useEffect } from 'react';
 import classNames from 'classnames';
 
-import { Tile as TileHelper, TileType } from 'models';
-
 import * as Style from './style.module.scss';
 
 type PopupProps = {
@@ -27,7 +25,7 @@ export const Popup: FC<PopupProps> = ({
   );
 }
 
-export const usePopup = (duration: number = 3000): [boolean, string, (m: string) => void] => {
+export const usePopup = (duration = 3000): [boolean, string, (m: string) => void] => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [message, setMessage] = useState<string>('');
 

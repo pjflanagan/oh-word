@@ -15,12 +15,6 @@ type GridCoords = {
   col: number;
 }
 
-export type TileType = GridCoords & {
-  id: number;
-  character: Alphabet;
-  value: number;
-}
-
 // VALUES are all the values of each letter
 const VALUES = {
   'A': 1,
@@ -53,39 +47,49 @@ const VALUES = {
   '': 0
 };
 
-export const Tile = {
-  makeTile: (tile: TileConstructorType): TileType => {
-    const id = (tile.id !== undefined) ? tile.id : UNSET; // id in roll, UNSET means not set (empty grid spot)
-    const character = (tile.character !== undefined) ? tile.character : ''; // a character object with letter and value
-    const value = VALUES[character];
-    const row = (tile.row !== undefined) ? tile.row : UNSET;
-    const col = (tile.col !== undefined) ? tile.col : UNSET;
-    return { id, character, value, row, col };
-  },
-  isPlaced: (tile: TileType): boolean => {
-    return tile.row !== UNSET && tile.col !== UNSET;
-  },
-  getDisplayCharacter: (tile: TileType): string => {
-    return tile.character === '_' ? '' : tile.character;
-  },
-  getDisplayValue: (tile: TileType): string | number => {
-    return tile.value === 0 ? '' : tile.value;
-  },
-  makeUnplacedTile: (tile: TileType): TileType => {
-    return {
-      ...tile,
-      row: UNSET,
-      col: UNSET,
-    };
-  },
-  makePlacedTile: (tile: TileType, { row, col }: GridCoords): TileType => {
-    return {
-      ...tile,
-      row,
-      col
-    };
-  },
-};
+export class Tile {
+  row: number;
+  col: number;
+  id: number;
+  character: Alphabet;
+  value: number;
 
-export const EmptyTile = Tile.makeTile({});
+  constructor(tileData: TileConstructorType) {
+    this.id = (tileData.id !== undefined) ? tileData.id : UNSET; // id in roll, UNSET means not set (empty grid spot)
+    this.character = (tileData.character !== undefined) ? tileData.character : ''; // a character object with letter and value
+    this.value = VALUES[this.character];
+    this.row = (tileData.row !== undefined) ? tileData.row : UNSET;
+    this.col = (tileData.col !== undefined) ? tileData.col : UNSET;
 
+  }
+
+  isEmpty() {
+    return this.character === '';
+  }
+
+  isPlaced() {
+    return this.row !== UNSET && this.col !== UNSET;
+  }
+
+  getDisplayCharacter(): string {
+    return this.character === '_' ? '' : this.character;
+  }
+
+  getDisplayValue(): string | number {
+    return this.value === 0 ? '' : this.value;
+  }
+
+  unplaceTile(): Tile {
+    this.row = UNSET;
+    this.col = UNSET;
+    return this;
+  }
+
+  placeTile({ row, col }: GridCoords): Tile {
+    this.row = row;
+    this.col = col;
+    return this;
+  }
+}
+
+export const EmptyTile = new Tile({});

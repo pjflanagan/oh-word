@@ -1,40 +1,50 @@
-import { Alphabet, TileType, Tile, CUBE_COUNT, placeTilesRandomly, UNSET, isUnset } from '.';
+import { Alphabet, Tile, GRID_SIZE, placeTilesRandomly, UNSET, isUnset, CUBES } from '.';
 
-export type CopyTypeEnum = 'ROLL' | 'SCORE';
-
-function pad(num: number) {
-  const s = '0' + num;
-  return s.substr(s.length - 2);
+function convertCoordinatesToGridIndex(row: number, col: number): number | '' {
+  if (row === UNSET || col === UNSET) {
+    return '';
+  }
+  return row * GRID_SIZE + col;
 }
 
-export const makeTileString = (mode: CopyTypeEnum, tiles: TileType[]): string => {
+function convertGridIndexToCoordinates(gridIndex: number | '') {
+  if (gridIndex === '') {
+    return [UNSET, UNSET];
+  }
+  return [Math.floor(gridIndex / GRID_SIZE), gridIndex % GRID_SIZE];
+}
+
+export enum URLMode {
+  ROLL, 
+  SCORE
+}
+
+export const makeTileString = (mode: URLMode, tiles: Tile[]): string => {
   return tiles.map(tile => {
-    const row = (mode === 'ROLL') ? UNSET : pad(tile.row);
-    const col = (mode === 'ROLL') ? UNSET : pad(tile.col);
-    return `${tile.character}${row}${col}`;
-  }).join('.');
+    const gridIndex = (mode === URLMode.ROLL) ? '' : convertCoordinatesToGridIndex(tile.row, tile.col);
+    return `${tile.character}${gridIndex}`;
+  }).join('');
 };
 
-export const makeURLParamString = (mode: CopyTypeEnum, tiles: TileType[]): string => {
+export const makeURLParamString = (mode: URLMode, tiles: Tile[]): string => {
   const urlSearchParams = new URLSearchParams();
   urlSearchParams.set('tiles', makeTileString(mode, tiles));
   return `?${urlSearchParams.toString()}`;
 }
 
-
-export const makeTilesFromTileString = (tiles: string): TileType[] => {
-  const newTiles: TileType[] = [];
+export const makeTilesFromTileString = (tiles: string): Tile[] => {
+  const newTiles: Tile[] = [];
   let modeRoll = false;
-  tiles.split('.').forEach((tile: string, i: number) => {
-    const character = tile[0] as Alphabet;
-    const row = parseInt(tile[1] + tile[2]);
-    const col = parseInt(tile[3] + tile[4]);
+  const tileArray = [...tiles.matchAll(/(\w)(\d*)/g)];
+  tileArray.forEach((tile, i: number) => {
+    const character = tile[1] as Alphabet;
+    const [row, col] = convertGridIndexToCoordinates(parseInt(tile[2]))
     if (isUnset(row) || isUnset(col)) {
       modeRoll = true;
     }
-    newTiles.push(Tile.makeTile({ id: i, character, row, col }));
+    newTiles.push(new Tile({ id: i, character, row, col }));
   });
-  if (newTiles.length !== CUBE_COUNT) {
+  if (newTiles.length !== CUBES.length) {
     return [];
   }
   if (modeRoll) {

@@ -1,4 +1,4 @@
-import React, { Children, FC } from 'react';
+import React, { FC } from 'react';
 import classNames from 'classnames';
 
 import * as Style from './style.module.scss';

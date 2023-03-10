@@ -1,18 +1,18 @@
 
 import React, { FC } from 'react';
 
-import { GridType, TileType, isSet, isUnset } from 'models';
-import { Tile as TileComponent } from 'elements';
+import { Grid, Tile, isSet, isUnset } from 'models';
+import { TileElement } from 'elements';
 
 import * as Style from './style.module.scss';
 
-type GridProps = {
-  grid: GridType;
-  dockTile: TileType;
-  selectTile: (tile: TileType) => void;
+type GridComponentProps = {
+  grid: Grid;
+  dockTile: Tile;
+  selectTile: (tile: Tile) => void;
 }
 
-const Grid: FC<GridProps> = ({
+const GridComponent: FC<GridComponentProps> = ({
   grid,
   dockTile,
   selectTile
@@ -23,12 +23,12 @@ const Grid: FC<GridProps> = ({
       <div className={Style.gridHolder}>
         <div className={Style.grid}>
           {
-            grid.map((row: TileType[], i) => (
+            grid.map((row: Tile[], i: number) => (
               <div className={Style.row} key={i}>
                 {
-                  row.map((tile: TileType, i) => (
+                  row.map((tile: Tile, i) => (
                     <div className={Style.col} key={i}>
-                      <TileComponent
+                      <TileElement
                         tile={tile}
                         onClick={() => selectTile(tile)}   // TODO: empty grid tile on hover display dockTile info
                         selectable={(isUnset(tile.id) && isSet(dockTile.id)) || isSet(tile.id)}
@@ -46,7 +46,7 @@ const Grid: FC<GridProps> = ({
 }
 
 
-export { Grid }
+export { GridComponent }
 
 
 

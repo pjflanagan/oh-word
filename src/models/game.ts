@@ -1,21 +1,17 @@
 
-import { Alphabet, CUBES, rollCube, Cube, TileType, Tile, getScore, isUnset } from '.';
+import { Grid, Alphabet, CUBES, Tile, isUnset, makeCubeRollString, makeDefaultGrid, getClusterScore, makeGridFromTiles, GRID_SIZE } from '.';
 
-export type GridType = TileType[][];
-
-export const CUBE_COUNT = CUBES.length;
-
-export const placeTilesRandomly = (tiles: TileType[]): TileType[] => {
-  const grid = Game.makeDefaultGrid();
-  const newTiles: TileType[] = [];
-  tiles.forEach((tile: TileType) => {
+export const placeTilesRandomly = (tiles: Tile[]): Tile[] => {
+  const grid = makeDefaultGrid();
+  const newTiles: Tile[] = [];
+  tiles.forEach((tile: Tile) => {
     let placed = false;
     while (!placed) {
-      const row = Math.floor(Math.random() * CUBE_COUNT);
-      const col = Math.floor(Math.random() * CUBE_COUNT);
+      const row = Math.floor(Math.random() * GRID_SIZE);
+      const col = Math.floor(Math.random() * GRID_SIZE);
       if (isUnset(grid[row][col].id)) {
         grid[row][col] = tile;
-        const newTile = Tile.makePlacedTile(tile, { row, col });
+        const newTile = new Tile({ ...tile, row, col });
         newTiles.push(newTile);
         placed = true;
       }
@@ -27,50 +23,27 @@ export const placeTilesRandomly = (tiles: TileType[]): TileType[] => {
 export const Game = {
 
   makeRollString: (): Alphabet[] => {
-    const roll: Alphabet[] = [];
-    // if there is no rollString, then make one
-    CUBES.forEach((cube: Cube) => {
-      roll.push(rollCube(cube));
-    });
-    return roll;
+    // TODO: make my own version
+    return makeCubeRollString();
   },
 
-  makeTiles: (roll: Alphabet[]): TileType[] => {
+  makeTiles: (roll: Alphabet[]): Tile[] => {
     const tiles = [];
     for (let i = 0; i < roll.length; i++) {
-      tiles.push(Tile.makeTile({ id: i, character: roll[i] }))
+      tiles.push(new Tile({ id: i, character: roll[i] }))
     }
     return placeTilesRandomly(tiles);
   },
 
-  makeDefaultGrid: (): GridType => {
-    const grid: GridType = [];
-    for (let row = 0; row < CUBE_COUNT; row++) {
-      grid.push([]);
-      for (let col = 0; col < CUBE_COUNT; col++) {
-        grid[row].push(Tile.makeTile({ row, col }));
-      }
-    }
-    return grid;
+  makeGridFromTiles: (tiles: Tile[]): Grid => {
+    return makeGridFromTiles(tiles);
   },
 
-  makeGridFromTiles: (tiles: TileType[]): GridType => {
-    const grid = Game.makeDefaultGrid();
-    tiles.forEach((tile: TileType) => {
-      if (Tile.isPlaced(tile)) {
-        const { row, col } = tile;
-        grid[row][col] = tile;
-      }
-    });
-    return grid;
-  },
-
-
-  getScore: (tiles: TileType[]): number => {
+  getScore: (tiles: Tile[]): number => {
     if (!tiles || tiles.length === 0) {
       return 0;
     }
-    const score = getScore(tiles);
+    const score = getClusterScore(tiles);
     return Math.max(score, 0);
   }
 }
