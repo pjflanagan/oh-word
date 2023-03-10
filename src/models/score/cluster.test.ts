@@ -1,7 +1,7 @@
 import assert from 'assert';
 
 import { getClusterScore } from './cluster'; // getLargestCluster
-import { makeTilesFromTileString } from './url';
+import { makeTilesFromTileString } from '../url';
 
 type TestData = [string, number];
 

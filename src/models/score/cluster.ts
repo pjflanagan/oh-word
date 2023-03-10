@@ -1,4 +1,4 @@
-import { Grid, EmptyTile, Tile, isSet, isUnset, makeGridFromTiles, GRID_SIZE } from '.';
+import { Grid, EmptyTile, Tile, isSet, isUnset, makeGridFromTiles, GRID_SIZE } from '../';
 
 type ClusterType = number[];
 
@@ -14,24 +14,24 @@ const getLargestCluster = (grid: Grid, tiles: Tile[]): ClusterType => {
 };
 
 const makeClusters = function (grid: Grid, tiles: Tile[]): ClusterType[] {
-  let untrackedTileIndicies = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+  let untrackedTileIndices = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
   const clusters = [];
-  while (untrackedTileIndicies.length > 0) {
-    const tile = tiles.find(t => t.id === untrackedTileIndicies[0]);
+  while (untrackedTileIndices.length > 0) {
+    const tile = tiles.find(t => t.id === untrackedTileIndices[0]);
     if (!tile) {
-      untrackedTileIndicies.shift();
+      untrackedTileIndices.shift();
       break;
     }
     if (!tile.isPlaced()) {
       // if it hasn't been played then it can be considered an individual cluster
       clusters.push([tile.id]);
-      untrackedTileIndicies.shift();
+      untrackedTileIndices.shift();
     } else {
       // otherwise it is on the board, so try and make a cluster from it
       let cluster = makeCluster(grid, tile, []);
       cluster = Array.from(new Set(cluster));
       clusters.push(cluster);
-      untrackedTileIndicies = untrackedTileIndicies.filter(id => !cluster.includes(id));
+      untrackedTileIndices = untrackedTileIndices.filter(id => !cluster.includes(id));
     }
   }
   return clusters;
@@ -39,7 +39,7 @@ const makeClusters = function (grid: Grid, tiles: Tile[]): ClusterType[] {
 
 const makeCluster = function (grid: Grid, tile: Tile, cluster: ClusterType): ClusterType {
   // if there is no id, then this is not a tile
-  if (isUnset(tile.id) || tile.character === '') {
+  if (isUnset(tile.id) || tile.character === ' ') {
     return [];
   }
 

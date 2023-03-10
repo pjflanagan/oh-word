@@ -16,7 +16,7 @@ const MainComponent: FC = () => {
   const [tiles, setTiles] = useState<Tile[]>([]);
   const [dockTileId, setDockTileId] = useState<number>(UNSET);
 
-  const newRoll = () => {
+  const shuffle = () => {
     const letterSet = Game.makeRandomLetterSet();
     const newTiles = Game.makeTiles(letterSet);
     setDockTileId(UNSET);
@@ -30,12 +30,12 @@ const MainComponent: FC = () => {
 
   useEffect(() => {
     if (!tilesQueryParam) {
-      newRoll();
+      shuffle();
       return;
     }
     const newTiles = makeTilesFromTileString(tilesQueryParam);
     if (newTiles.length === 0) {
-      newRoll();
+      shuffle();
       return;
     }
     setTiles(newTiles);
@@ -120,7 +120,7 @@ const MainComponent: FC = () => {
           <Dock
             dockTile={dockTile}
             score={score.totalScore}
-            newRoll={newRoll}
+            shuffle={shuffle}
           />
         </Bun>
       </Container>

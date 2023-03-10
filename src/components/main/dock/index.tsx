@@ -7,11 +7,11 @@ import * as Style from './style.module.scss';
 
 type DockProps = {
   dockTile: Tile;
-  newRoll: () => void;
+  shuffle: () => void;
   score: number;
 }
 
-const Dock: FC<DockProps> = ({ dockTile, newRoll, score }) => {
+const Dock: FC<DockProps> = ({ dockTile, shuffle, score }) => {
 
   return (
     <div className={Style.dock}>
@@ -20,15 +20,20 @@ const Dock: FC<DockProps> = ({ dockTile, newRoll, score }) => {
           tile={dockTile}
           selectable={isSet(dockTile.id)}
           dock
+          inCluster={false}
         />
       </div>
       <div className={Style.dockButtons}>
         <Button
-          onClick={newRoll}
-          icon="New"
-          label="Roll"
+          onClick={shuffle}
+          icon="Play"
+          label="Daily"
         />
-
+        <Button
+          onClick={shuffle}
+          icon="New"
+          label="Shuffle"
+        />
         <Button
           disabled
           icon={`${score}`}

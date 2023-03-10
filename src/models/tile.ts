@@ -1,7 +1,7 @@
 
 import { UNSET } from '.';
 
-export type Alphabet = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I' | 'J' | 'K' | 'L' | 'M' | 'N' | 'O' | 'P' | 'Q' | 'R' | 'S' | 'T' | 'U' | 'V' | 'W' | 'X' | 'Y' | 'Z' | '';
+export type Alphabet = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I' | 'J' | 'K' | 'L' | 'M' | 'N' | 'O' | 'P' | 'Q' | 'R' | 'S' | 'T' | 'U' | 'V' | 'W' | 'X' | 'Y' | 'Z' | ' ';
 
 type TileConstructorType = {
   id?: number;
@@ -43,7 +43,7 @@ const VALUES = {
   'X': 8,
   'Y': 4,
   'Z': 10,
-  '': 0
+  ' ': 0
 };
 
 export class Tile {
@@ -55,7 +55,7 @@ export class Tile {
 
   constructor(tileData: TileConstructorType) {
     this.id = (tileData.id !== undefined) ? tileData.id : UNSET; // id in roll, UNSET means not set (empty grid spot)
-    this.character = (tileData.character !== undefined) ? tileData.character : ''; // a character object with letter and value
+    this.character = (tileData.character !== undefined) ? tileData.character : ' '; // a character object with letter and value
     this.value = VALUES[this.character];
     this.row = (tileData.row !== undefined) ? tileData.row : UNSET;
     this.col = (tileData.col !== undefined) ? tileData.col : UNSET;
@@ -63,7 +63,7 @@ export class Tile {
   }
 
   isEmpty() {
-    return this.character === '';
+    return this.character === ' ';
   }
 
   isPlaced() {

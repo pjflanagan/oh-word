@@ -1,5 +1,6 @@
 
-import { Grid, Alphabet, Tile, isUnset, makeRandomLetterSet, makeDefaultGrid, Score, makeGridFromTiles, GRID_SIZE, getScore, NO_SCORE } from '.';
+import { Grid, Alphabet, Tile, isUnset, makeRandomLetterSet, makeDefaultGrid, makeGridFromTiles, GRID_SIZE } from '.';
+import { NO_SCORE, getScore, Score } from './score';
 
 export const placeTilesRandomly = (tiles: Tile[]): Tile[] => {
   const grid = makeDefaultGrid();
