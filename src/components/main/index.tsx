@@ -12,7 +12,7 @@ import * as Style from './style.module.scss';
 const MainComponent: FC = () => {
 
   const [isOpen, message, sendPopup] = usePopup();
-  const [tilesQueryParam, setTilesQueryParam] = useQueryParam('t', StringParam);
+  const [tilesQueryParam, _setTilesQueryParam] = useQueryParam('t', StringParam);
   const [tiles, setTiles] = useState<Tile[]>([]);
   const [dockTileId, setDockTileId] = useState<number>(UNSET);
 
@@ -28,6 +28,7 @@ const MainComponent: FC = () => {
     // setTilesQueryParam(makeTileString(URLMode.SCORE, tiles));
   }
 
+  // onload
   useEffect(() => {
     if (!tilesQueryParam) {
       shuffle();
@@ -41,16 +42,13 @@ const MainComponent: FC = () => {
     setTiles(newTiles);
   }, []);
 
+  // whenever tiles change
   useEffect(() => {
     setURLParams();
   }, [tiles]);
 
   const getScore = () => {
     return Game.getScore(tiles);
-  }
-
-  const makeGrid = () => {
-    return Game.makeGridFromTiles(tiles);
   }
 
   const copyURL = (urlMode: URLMode) => {
@@ -68,35 +66,7 @@ const MainComponent: FC = () => {
     return tiles.find((t: Tile) => t.id === dockTileId) || EmptyTile;
   }
 
-  const replace = (selectedTile: Tile) => {
-    if (isUnset(dockTileId) && isUnset(selectedTile.id)) {
-      return;
-    }
-    const { row, col } = selectedTile;
-    // filter the selected tile out
-    let newTiles: Tile[] = [...tiles];
-    if (isSet(selectedTile.id)) {
-      // if there is a selected tile
-      newTiles = newTiles.filter(t => t.id !== selectedTile.id);
-      // replace the tile with an unplaced one
-      newTiles = [...newTiles, selectedTile.unplaceTile()];
-    }
-    if (isSet(dockTileId)) {
-      // if there is a tile in the dock
-      const dockTile = getDockTile();
-      // filter the dock tile from tiles
-      newTiles = newTiles.filter(t => t.id !== dockTileId);
-      // make a newly placed tile and put it in the array
-      const newlyPlacedTile = dockTile.placeTile({ row, col });
-      newTiles = [...newTiles, newlyPlacedTile];
-    }
-    setTiles(newTiles);
-    setDockTileId(selectedTile.id);
-  }
-
   const dockTile = getDockTile();
-  const grid = makeGrid();
-
   const score = useMemo(getScore, [tiles]);
 
   return (
@@ -110,9 +80,10 @@ const MainComponent: FC = () => {
         </Bun>
         <Burger>
           <GridComponent
-            grid={grid}
+            tiles={tiles}
+            setTiles={setTiles}
             dockTile={dockTile}
-            selectTile={replace}
+            setDockTileId={setDockTileId}
             score={score}
           />
         </Burger>

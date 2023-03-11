@@ -15,13 +15,15 @@ const Dock: FC<DockProps> = ({ dockTile, shuffle, score }) => {
 
   return (
     <div className={Style.dock}>
-      <div className={Style.dockTile}>
-        <TileElement
-          tile={dockTile}
-          selectable={isSet(dockTile.id)}
-          dock
-          inCluster={false}
-        />
+      <div className={Style.dockTileHolder}>
+        <div className={Style.dockTile}>
+          <TileElement
+            tile={dockTile}
+            selectable={isSet(dockTile.id)}
+            dock
+            inCluster={false}
+          />
+        </div>
       </div>
       <div className={Style.dockButtons}>
         <Button

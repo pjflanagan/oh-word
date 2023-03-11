@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import classNames from 'classnames';
+import { GrClose } from 'react-icons/gr';
 
 import * as Style from './style.module.scss';
 
@@ -21,8 +22,11 @@ export const Modal: FC<ModalProps> = ({
 
   return (
     <div className={className}>
-      <div className={Style.title}>{title}</div>
-      {children}
+      <div className={Style.header}>
+        <div className={Style.title}>{title}</div>
+        <div className={Style.close}><GrClose /></div>
+      </div>
+      <div className={Style.body}>{children}</div>
     </div>
   );
 }

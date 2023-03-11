@@ -3,15 +3,17 @@
   width: 100%;
   height: 100%;
   max-width: 616px;
+  display: flex;
+  flex-direction: column;
 
   .container-row {
+    width: 100%;
 
     &.bun {
-      height: 120px;
+      height: max(calc(100% - 100vw), calc(100% - 616px));
     }
 
     &.burger {
-      min-height: calc(100% - 160px); // min fill the screen
       height: 100vw; // default to how wide the screen is
       max-height: 616px; // max of 616
     }
