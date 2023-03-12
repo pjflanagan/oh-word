@@ -1,7 +1,7 @@
 import { GRID_SIZE, makeGridFromTiles } from "models/grid";
 import { Tile } from "models/tile";
 
-type WordTileDirections = {
+export type WordTileDirections = {
   word: string;
   direction: 'vertical' | 'horizontal';
   tileIds: number[]
@@ -16,8 +16,8 @@ function getWordsFromTiles(tiles: Tile[]): WordTileDirections[] {
     let wordTileIds = [];
     for (let c = 0; c < GRID_SIZE; c++) {
       if (!grid[r][c].isEmpty()) {
-        currentWord += grid[r][c].character;
-        wordTileIds.push(grid[r][c].id);
+        currentWord += grid[r][c].getCharacter();
+        wordTileIds.push(grid[r][c].getId());
       }
       if (currentWord !== '' && (c === GRID_SIZE -1 || grid[r][c].isEmpty())) {
         horizontalWords.push({
@@ -36,8 +36,8 @@ function getWordsFromTiles(tiles: Tile[]): WordTileDirections[] {
     let wordTileIds = [];
     for (let r = 0; r < GRID_SIZE; r++) {
       if (!grid[r][c].isEmpty()) {
-        currentWord += grid[r][c].character;
-        wordTileIds.push(grid[r][c].id);
+        currentWord += grid[r][c].getCharacter();
+        wordTileIds.push(grid[r][c].getId());
       }
       if (currentWord !== '' && (r === GRID_SIZE -1 || grid[r][c].isEmpty())) {
         verticalWords.push({

@@ -1,5 +1,5 @@
 
-import { UNSET } from '.';
+import { Grid, GRID_SIZE, UNSET } from '.';
 
 export type Alphabet = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I' | 'J' | 'K' | 'L' | 'M' | 'N' | 'O' | 'P' | 'Q' | 'R' | 'S' | 'T' | 'U' | 'V' | 'W' | 'X' | 'Y' | 'Z' | ' ';
 
@@ -46,12 +46,20 @@ const VALUES = {
   ' ': 0
 };
 
+type SurroundingTiles = {
+  up: Tile;
+  down: Tile;
+  left: Tile;
+  right: Tile;
+  total: number;
+}
+
 export class Tile {
-  row: number;
-  col: number;
-  id: number;
-  character: Alphabet;
-  value: number;
+  private row: number;
+  private col: number;
+  private id: number;
+  private character: Alphabet;
+  private value: number;
 
   constructor(tileData: TileConstructorType) {
     this.id = (tileData.id !== undefined) ? tileData.id : UNSET; // id in roll, UNSET means not set (empty grid spot)
@@ -62,8 +70,31 @@ export class Tile {
 
   }
 
+  getId(): number {
+    return this.id;
+  }
+
+  getCharacter(): string {
+    return this.character;
+  }
+
+  getValue(): number {
+    return this.value;
+  }
+
+  getLocation() {
+    return {
+      row: this.row,
+      col: this.col
+    }
+  }
+
+  isSet(): boolean {
+    return this.id !== UNSET;
+  }
+
   isEmpty() {
-    return this.character === ' ';
+    return this.id === UNSET;
   }
 
   isPlaced() {
@@ -88,6 +119,35 @@ export class Tile {
     this.row = row;
     this.col = col;
     return this;
+  }
+
+  getSurroundingTiles(grid: Grid) {
+    const up = (this.row > 0) ? grid[this.row - 1][this.col] : EmptyTile;
+    const down = (this.row < GRID_SIZE - 1) ? grid[this.row + 1][this.col] : EmptyTile;
+    const left = (this.col > 0) ? grid[this.row][this.col - 1] : EmptyTile;
+    const right = (this.col < GRID_SIZE - 1) ? grid[this.row][this.col + 1] : EmptyTile;
+    const total = [up, down, left, right]
+      .map(tile => tile.isSet() ? 1 : 0)
+      .reduce((count, existingTiles) => count + existingTiles, 0 as number);
+
+    return {
+      up,
+      down,
+      left,
+      right,
+      total,
+      exists: {
+        up: up.isSet(),
+        down: down.isSet(),
+        left: left.isSet(),
+        right: right.isSet(),
+      }
+    }
+  }
+
+  isDoubled(grid: Grid): boolean {
+    const { up, down, left, right } = this.getSurroundingTiles(grid).exists;
+    return (up || down) && (left || right);
   }
 }
 

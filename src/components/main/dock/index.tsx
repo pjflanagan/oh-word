@@ -16,7 +16,7 @@ const Dock: FC<DockProps> = ({ dockTile, shuffle, score }) => {
   const [deg, setDeg] = useState<number>(0);
 
   useEffect(() => {
-    if (isSet(dockTile.id)) {
+    if (dockTile.isSet()) {
       const deg = Math.random() * 12 - 6;
       setDeg(deg);
     } else {
@@ -35,7 +35,7 @@ const Dock: FC<DockProps> = ({ dockTile, shuffle, score }) => {
         >
           <TileElement
             tile={dockTile}
-            selectable={isSet(dockTile.id)}
+            selectable={dockTile.isSet()}
             dock
             inCluster={false}
           />

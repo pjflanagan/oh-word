@@ -1,9 +1,13 @@
 import React, { FC, useState, useEffect } from 'react';
 import classNames from 'classnames';
 
-import { Tile, isSet, isUnset } from 'models';
+import { Tile, isSet, Grid } from 'models';
 
 import * as Style from './style.module.scss';
+
+function getDisplayValue(value: number): string {
+  return `${value === 0 ? '' : value}`
+}
 
 type TileElementProps = {
   onClick?: () => void;
@@ -12,6 +16,7 @@ type TileElementProps = {
   selectable: boolean;
   dock?: boolean;
   inCluster: boolean;
+  isDoubled?: boolean;
   horizontalWordScore?: number;
   verticalWordScore?: number;
 }
@@ -23,13 +28,14 @@ export const TileElement: FC<TileElementProps> = ({
   selectable,
   dock,
   inCluster,
+  isDoubled,
   horizontalWordScore,
   verticalWordScore
 }) => {
   const [deg, setDeg] = useState<number>(0);
 
   useEffect(() => {
-    if (isSet(tile.id) && !dock) {
+    if (isSet(tile.getId()) && !dock) {
       const deg = Math.random() * 6 - 3;
       setDeg(deg);
     }
@@ -42,13 +48,16 @@ export const TileElement: FC<TileElementProps> = ({
 
   const getTileClassName = () => {
     return classNames(Style.tile, {
-      [Style.empty]: isUnset(tile.id),
+      [Style.empty]: !tile.isSet(),
       [Style.selectable]: selectable,
-      [Style.real]: isSet(tile.id),
+      [Style.real]: tile.isSet(),
       [Style.dock]: dock,
-      [Style.cluster]: inCluster
+      [Style.cluster]: inCluster,
+      [Style.doubled]: isDoubled
     });
   }
+
+  const displayValue = getDisplayValue(tile.getValue() * (isDoubled ? 2 : 1))
 
   return (
     <div
@@ -58,7 +67,7 @@ export const TileElement: FC<TileElementProps> = ({
       onMouseOver={onMouseOver}
     >
       {
-        isUnset(tile.id) && <div className={Style.dot} />
+        !tile.isSet() && <div className={Style.dot} />
       }
       {
         horizontalWordScore && <div className={classNames(Style.wordScore, Style.horizontal)}>{horizontalWordScore}</div>
@@ -69,8 +78,8 @@ export const TileElement: FC<TileElementProps> = ({
       <div className={Style.character}>
           {tile.getDisplayCharacter()}
       </div>
-      <div className={Style.value}>
-          {tile.getDisplayValue()}
+      <div className={classNames(Style.value, { [Style.doubled]: isDoubled })}>
+          {displayValue}
       </div>
     </div>
   );

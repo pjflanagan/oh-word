@@ -1,7 +1,7 @@
 
 import React, { FC } from 'react';
 
-import { Grid, Tile, isSet, isUnset, Game } from 'models';
+import { Tile, Game } from 'models';
 import { TileElement } from 'elements';
 
 import * as Style from './style.module.scss';
@@ -27,27 +27,27 @@ const GridComponent: FC<GridComponentProps> = ({
 
 
   const replace = (selectedTile: Tile) => {
-    if (isUnset(dockTile.id) && isUnset(selectedTile.id)) {
+    if (dockTile.isEmpty() && selectedTile.isEmpty()) {
       return;
     }
-    const { row, col } = selectedTile;
+    const { row, col } = selectedTile.getLocation();
     // filter the selected tile out
     let newTiles: Tile[] = [...tiles];
-    if (isSet(selectedTile.id)) {
+    if (selectedTile.isSet()) {
       // if there is a selected tile
-      newTiles = newTiles.filter(t => t.id !== selectedTile.id);
+      newTiles = newTiles.filter(t => t.getId() !== selectedTile.getId());
       // replace the tile with an unplaced one
       newTiles = [...newTiles, selectedTile.unplaceTile()];
     }
-    if (isSet(dockTile.id)) {
+    if (dockTile.isSet()) {
       // filter the dock tile from tiles
-      newTiles = newTiles.filter(t => t.id !== dockTile.id);
+      newTiles = newTiles.filter(t => t.getId() !== dockTile.getId());
       // make a newly placed tile and put it in the array
       const newlyPlacedTile = dockTile.placeTile({ row, col });
       newTiles = [...newTiles, newlyPlacedTile];
     }
     setTiles(newTiles);
-    setDockTileId(selectedTile.id);
+    setDockTileId(selectedTile.getId());
   }
 
   return (
@@ -63,10 +63,11 @@ const GridComponent: FC<GridComponentProps> = ({
                       <TileElement
                         tile={tile}
                         onClick={() => replace(tile)}   // TODO: empty grid tile on hover display dockTile info
-                        selectable={(isUnset(tile.id) && isSet(dockTile.id)) || isSet(tile.id)}
-                        inCluster={score.clusterTileIds.includes(tile.id)}
-                        horizontalWordScore={score.wordLengthScores.find(wls => wls.direction === 'horizontal' && wls.lastLetterTile === tile.id)?.score}
-                        verticalWordScore={score.wordLengthScores.find(wls => wls.direction === 'vertical' && wls.lastLetterTile === tile.id)?.score}
+                        selectable={(tile.isEmpty() && dockTile.isSet()) || tile.isSet()}
+                        inCluster={score.clusterTileIds.includes(tile.getId())}
+                        isDoubled={tile.isDoubled(grid)}
+                        horizontalWordScore={score.wordLengthScores.find(wls => wls.direction === 'horizontal' && wls.lastLetterTile === tile.getId())?.score}
+                        verticalWordScore={score.wordLengthScores.find(wls => wls.direction === 'vertical' && wls.lastLetterTile === tile.getId())?.score}
                       />
                     </div>
                   ))
