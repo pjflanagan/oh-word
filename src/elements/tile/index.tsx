@@ -29,7 +29,7 @@ export const TileElement: FC<TileElementProps> = ({
   const [deg, setDeg] = useState<number>(0);
 
   useEffect(() => {
-    if (isSet(tile.id)) {
+    if (isSet(tile.id) && !dock) {
       const deg = Math.random() * 6 - 3;
       setDeg(deg);
     }
@@ -66,8 +66,12 @@ export const TileElement: FC<TileElementProps> = ({
       {
         verticalWordScore && <div className={classNames(Style.wordScore, Style.vertical)}>{verticalWordScore}</div>
       }
-      <div className={Style.character}>{tile.getDisplayCharacter()}</div>
-      <div className={Style.value}>{tile.getDisplayValue()}</div>
+      <div className={Style.character}>
+          {tile.getDisplayCharacter()}
+      </div>
+      <div className={Style.value}>
+          {tile.getDisplayValue()}
+      </div>
     </div>
   );
 }

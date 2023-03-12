@@ -6,7 +6,7 @@
   box-sizing: border-box;
   user-select: none;
   border-radius: 3px;
-  border: 3px solid #000;
+  border: 2px solid #000;
   box-shadow: 1px 1px 0 #000;
 
   &.empty {
@@ -30,11 +30,11 @@
     position: absolute;
     background: #d53b3b;
     border-radius: 50%;
-    padding: 2px 6px;
+    padding: 2px 6px 3px;
     color: #fff;
     font-weight: bold;
-    border: 3px solid #000;
-    font-size: 12px;
+    border: 2px solid #000;
+    font-size: min(2.2vw, 14px);
 
     &.horizontal {
       left: 100%;
@@ -55,6 +55,8 @@
 
   &.empty.selectable:hover {
     background: #0002;
+    transform: scale(0.8) !important;
+
     .dot {
       background: #0000;
     }
@@ -76,11 +78,25 @@
   }
 
   &.dock {
-    transform: scale(1.2) !important;
+
+    &.empty {
+      transform: scale(0.8) !important;
+    }
 
     .dot {
-      background-color: #0000;
+      width: 100%;
+      height: 100%;
+      border-radius: 3px;
     }
+
+    .character {
+      font-size: 28px;
+    }
+
+    .value {
+      font-size: 18px;
+    }
+
   }
 
   .character {
@@ -89,45 +105,29 @@
     width: 100%;
     text-align: center;
     font-weight: bold;
-    font-size: 16px;
+    font-size: min(3.2vw, 26px);
     transform: translateY(-50%);
   }
 
   .value {
     position: absolute;
     text-align: right;
-    font-size: 12px;
+    font-size: min(2.2vw, 18px);
     top: 100%;
     left: 100%;
-    transform: translate(-110%, -110%);
+    transform: translate(-120%, -120%);
     color: #0008;
-  }
-}
-
-
-@media only screen and (min-width: 400px) {
-  .tile {
-    .character {
-      font-size: 22px;
-    }
-
-    .value {
-      font-size: 14px;
-    }
   }
 }
 
 
 @media only screen and (min-width: 500px) {
   .tile {
-    .character {
-      font-size: 24px;
-    }
+    border: 3px solid #000;
 
-    .value {
-      font-size: 14px;
+    .wordScore {
+      border: 3px solid #000;
     }
-
   }
 }
 
@@ -135,21 +135,14 @@
   .tile {
 
     .wordScore {
-      font-size: 14px;
+
       &.horizontal {
         top: 50%;
       }
+
       &.vertical {
         left: 50%;
       }
-    }
-
-    .character {
-      font-size: 28px;
-    }
-
-    .value {
-      font-size: 16px;
     }
   }
 }

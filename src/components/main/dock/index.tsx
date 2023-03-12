@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 
 import { Tile, isSet } from 'models';
 import { TileElement, Button } from 'elements';
@@ -13,10 +13,26 @@ type DockProps = {
 
 const Dock: FC<DockProps> = ({ dockTile, shuffle, score }) => {
 
+  const [deg, setDeg] = useState<number>(0);
+
+  useEffect(() => {
+    if (isSet(dockTile.id)) {
+      const deg = Math.random() * 12 - 6;
+      setDeg(deg);
+    } else {
+      setDeg(0);
+    }
+  }, [dockTile]);
+
   return (
     <div className={Style.dock}>
       <div className={Style.dockTileHolder}>
-        <div className={Style.dockTile}>
+        <div
+          className={Style.dockTile}
+          style={{
+            transform: `translateX(-50%) rotate(${deg}deg)`
+          }}
+        >
           <TileElement
             tile={dockTile}
             selectable={isSet(dockTile.id)}
@@ -42,7 +58,7 @@ const Dock: FC<DockProps> = ({ dockTile, shuffle, score }) => {
           label="Score"
         />
       </div>
-    </div >
+    </div>
   )
 }
 

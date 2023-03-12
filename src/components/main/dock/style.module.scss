@@ -5,13 +5,13 @@
 
   .dock-tile-holder {
     width: 120px;
+    padding: 12px;
 
     .dock-tile {
       width: 60px;
       height: 60px;
       left: 50%;
       position: relative;
-      transform: rotate(-6deg) translateX(-50%);
     }
   }
 
