@@ -1,7 +1,7 @@
 import React, { FC, useState, useEffect } from 'react';
 import classNames from 'classnames';
 
-import { Tile, isSet, Grid } from 'models';
+import { Tile } from 'models';
 
 import * as Style from './style.module.scss';
 
@@ -35,7 +35,7 @@ export const TileElement: FC<TileElementProps> = ({
   const [deg, setDeg] = useState<number>(0);
 
   useEffect(() => {
-    if (isSet(tile.getId()) && !dock) {
+    if (tile.isSet() && !dock) {
       const deg = Math.random() * 6 - 3;
       setDeg(deg);
     }

@@ -1,7 +1,7 @@
-import { Alphabet, Tile, GRID_SIZE, placeTilesRandomly, UNSET, isUnset } from '.';
+import { Alphabet, Tile, GRID_SIZE, placeTilesRandomly } from '.';
 
-function convertCoordinatesToGridIndex(row: number, col: number): number | '' {
-  if (row === UNSET || col === UNSET) {
+function convertCoordinatesToGridIndex(row: number | undefined, col: number | undefined): number | '' {
+  if (row === undefined || col === undefined) {
     return '';
   }
   return row * GRID_SIZE + col;
@@ -9,7 +9,7 @@ function convertCoordinatesToGridIndex(row: number, col: number): number | '' {
 
 function convertGridIndexToCoordinates(urlParam: string | '') {
   if (urlParam === '') {
-    return [UNSET, UNSET];
+    return [undefined, undefined];
   }
   const gridIndex = parseInt(urlParam)
   return [Math.floor(gridIndex / GRID_SIZE), gridIndex % GRID_SIZE];
@@ -22,8 +22,9 @@ export enum URLMode {
 
 export const makeTileString = (mode: URLMode, tiles: Tile[]): string => {
   return tiles.map(tile => {
-    const gridIndex = (mode === URLMode.ROLL) ? '' : convertCoordinatesToGridIndex(tile.row, tile.col);
-    return `${tile.character}${gridIndex}`;
+    const { row, col } = tile.getLocation();
+    const gridIndex = (mode === URLMode.ROLL) ? '' : convertCoordinatesToGridIndex(row, col);
+    return `${tile.getCharacter()}${gridIndex}`;
   }).join('');
 };
 
@@ -34,7 +35,7 @@ export const makeTilesFromTileString = (tiles: string): Tile[] => {
   tileArray.forEach((tile, i: number) => {
     const character = tile[1] as Alphabet;
     const [row, col] = convertGridIndexToCoordinates(tile[2])
-    if (isUnset(row) || isUnset(col)) {
+    if (row === undefined || col === undefined) {
       randomPlacement = true;
     }
     newTiles.push(new Tile({ id: i, character, row, col }));

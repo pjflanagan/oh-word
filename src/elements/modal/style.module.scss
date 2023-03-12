@@ -1,11 +1,33 @@
-
 .modal {
+  visibility: hidden;
+  pointer-events: none;
+  width: 80%;
+  height: 80%;
+  border-radius: 3px;
+  border: 3px solid #000;
+  background: #fff;
 
-  &.isOpen {
-
+  &.open {
+    visibility: visible;
+    pointer-events: all;
   }
 
-  .title {
-    
+  .header {
+    display: flex;
+    height: 30px;
+    width: 100%;
+
+    .title {
+      font-size: 12px;
+    }
+
+    .close {
+      width: 30px;
+    }
+  }
+
+  .body {
+    width: 100%;
+    height: calc(100% - 30px);
   }
 }

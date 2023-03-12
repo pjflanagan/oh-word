@@ -1,5 +1,5 @@
 
-import { Grid, Alphabet, Tile, isUnset, makeRandomLetterSet, makeDefaultGrid, makeGridFromTiles, GRID_SIZE } from '.';
+import { Grid, Alphabet, Tile, makeRandomLetterSet, makeDefaultGrid, makeGridFromTiles, GRID_SIZE } from '.';
 import { NO_SCORE, getScore, Score } from './score';
 
 export const placeTilesRandomly = (tiles: Tile[]): Tile[] => {
@@ -10,7 +10,7 @@ export const placeTilesRandomly = (tiles: Tile[]): Tile[] => {
     while (!placed) {
       const row = Math.floor(Math.random() * GRID_SIZE);
       const col = Math.floor(Math.random() * GRID_SIZE);
-      if (isUnset(grid[row][col].id)) {
+      if (grid[row][col].isEmpty()) {
         grid[row][col] = tile;
         const newTile = new Tile({ ...tile, row, col });
         newTiles.push(newTile);

@@ -16,8 +16,8 @@ const UNCOMMON_CONSONANTS = toAlphabetArray('ZYXQJ'); // 0 - 2
 const LETTER_TYPE_FREQUENCY: [Alphabet[], number, number][] = [
   [VOWELS, 3, 4],
   [VOWELS_AND_Y, 3, 4],
-  [COMMON_CONSONANTS, 4, 5],
-  [CONSONANTS, 4, 5],
+  [COMMON_CONSONANTS, 4, 6],
+  [CONSONANTS, 5, 7],
   [UNCOMMON_CONSONANTS, 0, 2]
 ];
 

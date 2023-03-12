@@ -1,11 +1,13 @@
 import { getClusterScore } from "./cluster";
 import { Tile } from "../tile";
-import { validateWords, WordValidationResults } from "./words";
+import { getWordLengthScores, WordLengthScore, getWordsFromTiles } from "./words";
 
 
-export type Score = WordValidationResults & {
+export type Score = {
   clusterTileIds: number[];
   totalScore: number;
+  errorTileIds: number[];
+  wordLengthScores: WordLengthScore[];
 }
 
 export const NO_SCORE: Score = {
@@ -17,14 +19,18 @@ export const NO_SCORE: Score = {
 
 export function getScore(tiles: Tile[]): Score {
   const { score: clusterScore, largestCluster } = getClusterScore(tiles);
-  const { errorTileIds, wordLengthScores } = validateWords(tiles.filter(t => largestCluster.includes(t.id)));
+  const largestClusterTiles = tiles.filter(t => largestCluster.includes(t.getId()!));
+  const wordTileDirections = getWordsFromTiles(largestClusterTiles);
+  const wordLengthScores = getWordLengthScores(wordTileDirections);
 
   const totalWordLengthScore = wordLengthScores.reduce((accum, wordScore) => wordScore.score + accum, 0);
+
+  const errorTileIds: number[] = [];
 
   return {
     clusterTileIds: largestCluster,
     errorTileIds,
     wordLengthScores,
-    totalScore: clusterScore + totalWordLengthScore,
+    totalScore: errorTileIds.length === 0 ? clusterScore + totalWordLengthScore : 0,
   }
 }

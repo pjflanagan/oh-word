@@ -8,7 +8,7 @@ export type WordTileDirections = {
 };
 
 // returns array of words and the tileIds that make that word
-function getWordsFromTiles(tiles: Tile[]): WordTileDirections[] {
+export function getWordsFromTiles(tiles: Tile[]): WordTileDirections[] {
   const grid = makeGridFromTiles(tiles);
   const horizontalWords: WordTileDirections[] = [];
   for (let r = 0; r < GRID_SIZE; r++) {
@@ -17,7 +17,7 @@ function getWordsFromTiles(tiles: Tile[]): WordTileDirections[] {
     for (let c = 0; c < GRID_SIZE; c++) {
       if (!grid[r][c].isEmpty()) {
         currentWord += grid[r][c].getCharacter();
-        wordTileIds.push(grid[r][c].getId());
+        wordTileIds.push(grid[r][c].getId()!);
       }
       if (currentWord !== '' && (c === GRID_SIZE -1 || grid[r][c].isEmpty())) {
         horizontalWords.push({
@@ -37,7 +37,7 @@ function getWordsFromTiles(tiles: Tile[]): WordTileDirections[] {
     for (let r = 0; r < GRID_SIZE; r++) {
       if (!grid[r][c].isEmpty()) {
         currentWord += grid[r][c].getCharacter();
-        wordTileIds.push(grid[r][c].getId());
+        wordTileIds.push(grid[r][c].getId()!);
       }
       if (currentWord !== '' && (r === GRID_SIZE -1 || grid[r][c].isEmpty())) {
         verticalWords.push({
@@ -59,9 +59,9 @@ export type WordLengthScore = {
   score: number
 };
 
-const WORD_LENGTH_SCORES = [0, 0, 0, 1, 2, 3, 6, 9, 12, 16, 25];
+const WORD_LENGTH_SCORES = [0, 0, 0, 0, 3, 5, 7, 9, 13, 19, 27];
 
-function getWordLengthScores(wordTileDirections: WordTileDirections[]): WordLengthScore[] {
+export function getWordLengthScores(wordTileDirections: WordTileDirections[]): WordLengthScore[] {
   return wordTileDirections.map(({ word, direction, tileIds }) => {
     return {
       lastLetterTile: tileIds[tileIds.length - 1],
@@ -71,17 +71,3 @@ function getWordLengthScores(wordTileDirections: WordTileDirections[]): WordLeng
   }).filter(({ score }) => score !== 0);
 }
 
-export type WordValidationResults = {
-  errorTileIds: number[];
-  wordLengthScores: WordLengthScore[];
-}
-
-export function validateWords(tiles: Tile[]): WordValidationResults {
-  const wordTileDirections = getWordsFromTiles(tiles);
-  const wordLengthScores = getWordLengthScores(wordTileDirections);
-  console.log(wordLengthScores);
-  return {
-    errorTileIds: [],
-    wordLengthScores,
-  }
-}

@@ -1,51 +1,45 @@
 import React, { FC, useState, useEffect, useMemo } from 'react';
-import { useQueryParam, StringParam } from "use-query-params";
 
-import { makeTilesFromTileString, Game, Tile, URLMode, makeTileString, EmptyTile, UNSET, isSet, isUnset } from 'models';
-import { Container, Burger, Bun, Popup, usePopup } from 'elements';
+import { makeTilesFromTileString, Game, Tile, URLMode, makeTileString, EmptyTile } from 'models';
+import { Container, Burger, Bun } from 'elements';
 
 import { Dock } from './dock';
 import { Header } from './header';
 import { GridComponent } from './grid';
 import * as Style from './style.module.scss';
+import { useQueryParamString } from 'react-use-query-param-string';
 
 const MainComponent: FC = () => {
 
-  const [isOpen, message, sendPopup] = usePopup();
-  const [tilesQueryParam, _setTilesQueryParam] = useQueryParam('t', StringParam);
+  // const [isOpen, message, sendPopup] = usePopup();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [tileParamString, _setTilesString, isInitialized, clearQueryParam] = useQueryParamString('t', '');
   const [tiles, setTiles] = useState<Tile[]>([]);
-  const [dockTileId, setDockTileId] = useState<number>(UNSET);
+  const [dockTileId, setDockTileId] = useState<number | undefined>(undefined);
+
 
   const shuffle = () => {
     const letterSet = Game.makeRandomLetterSet();
     const newTiles = Game.makeTiles(letterSet);
-    setDockTileId(UNSET);
+    setDockTileId(undefined);
     setTiles(newTiles);
-  }
-
-  const setURLParams = () => {
-    // TODO: fix this
-    // setTilesQueryParam(makeTileString(URLMode.SCORE, tiles));
   }
 
   // onload
   useEffect(() => {
-    if (!tilesQueryParam) {
+    if (!tileParamString) {
       shuffle();
       return;
     }
-    const newTiles = makeTilesFromTileString(tilesQueryParam);
+    const newTiles = makeTilesFromTileString(tileParamString);
     if (newTiles.length === 0) {
       shuffle();
       return;
     }
     setTiles(newTiles);
-  }, []);
-
-  // whenever tiles change
-  useEffect(() => {
-    setURLParams();
-  }, [tiles]);
+    // clear the tiles URL param so that the browser doesn't default to a specific set of tiles
+    clearQueryParam();
+  }, [isInitialized]);
 
   const getScore = () => {
     return Game.getScore(tiles);
@@ -53,17 +47,17 @@ const MainComponent: FC = () => {
 
   const copyURL = (urlMode: URLMode) => {
     let workingCopyType = urlMode;
-    if (isSet(dockTileId)) {
+    if (dockTileId !== undefined) {
       // if you wanna share score and the selected tile is UNSET, use
       workingCopyType = URLMode.ROLL;
     }
     const url = `${window.location.origin}?t=${makeTileString(workingCopyType, tiles)}`;
     navigator.clipboard.writeText(url);
-    sendPopup('URL Copied');
+    // sendPopup('URL Copied');
   }
 
   const getDockTile = (): Tile => {
-    return tiles.find((t: Tile) => t.id === dockTileId) || EmptyTile;
+    return tiles.find((t: Tile) => t.getId() === dockTileId) || EmptyTile;
   }
 
   const dockTile = getDockTile();
@@ -71,7 +65,9 @@ const MainComponent: FC = () => {
 
   return (
     <main className={Style.app}>
-      <Popup isOpen={isOpen}>{message}</Popup>
+      {/* <Modal isOpen={isOpen}>{message}</Modal>
+      <Modal isOpen={isOpen}>{message}</Modal>
+      <Modal isOpen={isOpen}>{message}</Modal> */}
       <Container>
         <Bun>
           <Header

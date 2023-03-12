@@ -1,5 +1,5 @@
 
-import { Grid, GRID_SIZE, UNSET } from '.';
+import { Grid, GRID_SIZE } from '.';
 
 export type Alphabet = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I' | 'J' | 'K' | 'L' | 'M' | 'N' | 'O' | 'P' | 'Q' | 'R' | 'S' | 'T' | 'U' | 'V' | 'W' | 'X' | 'Y' | 'Z' | ' ';
 
@@ -47,30 +47,36 @@ const VALUES = {
 };
 
 type SurroundingTiles = {
-  up: Tile;
-  down: Tile;
-  left: Tile;
-  right: Tile;
+  up?: Tile;
+  down?: Tile;
+  left?: Tile;
+  right?: Tile;
   total: number;
+  exists: {
+    up?: boolean;
+    down?: boolean;
+    left?: boolean;
+    right?: boolean;
+  }
 }
 
 export class Tile {
-  private row: number;
-  private col: number;
-  private id: number;
+  private row?: number;
+  private col?: number;
+  private id?: number;
   private character: Alphabet;
   private value: number;
 
   constructor(tileData: TileConstructorType) {
-    this.id = (tileData.id !== undefined) ? tileData.id : UNSET; // id in roll, UNSET means not set (empty grid spot)
+    this.id = tileData.id;
     this.character = (tileData.character !== undefined) ? tileData.character : ' '; // a character object with letter and value
     this.value = VALUES[this.character];
-    this.row = (tileData.row !== undefined) ? tileData.row : UNSET;
-    this.col = (tileData.col !== undefined) ? tileData.col : UNSET;
+    this.row = tileData.row;
+    this.col = tileData.col;
 
   }
 
-  getId(): number {
+  getId(): number | undefined {
     return this.id;
   }
 
@@ -82,7 +88,15 @@ export class Tile {
     return this.value;
   }
 
-  getLocation() {
+  getRow(): number | undefined {
+    return this.row;
+  }
+
+  getCol(): number | undefined {
+    return this.col;
+  }
+
+  getLocation(): { row?: number, col?: number } {
     return {
       row: this.row,
       col: this.col
@@ -90,15 +104,15 @@ export class Tile {
   }
 
   isSet(): boolean {
-    return this.id !== UNSET;
+    return this.id !== undefined;
   }
 
   isEmpty() {
-    return this.id === UNSET;
+    return this.id === undefined;
   }
 
   isPlaced() {
-    return this.row !== UNSET && this.col !== UNSET;
+    return this.row !== undefined && this.col !== undefined;
   }
 
   getDisplayCharacter(): string {
@@ -110,8 +124,8 @@ export class Tile {
   }
 
   unplaceTile(): Tile {
-    this.row = UNSET;
-    this.col = UNSET;
+    this.row = undefined;
+    this.col = undefined;
     return this;
   }
 
@@ -121,7 +135,13 @@ export class Tile {
     return this;
   }
 
-  getSurroundingTiles(grid: Grid) {
+  getSurroundingTiles(grid: Grid): SurroundingTiles {
+    if (this.row === undefined || this.col == undefined) {
+      return {
+        total: 0,
+        exists: {}
+      };
+    }
     const up = (this.row > 0) ? grid[this.row - 1][this.col] : EmptyTile;
     const down = (this.row < GRID_SIZE - 1) ? grid[this.row + 1][this.col] : EmptyTile;
     const left = (this.col > 0) ? grid[this.row][this.col - 1] : EmptyTile;
@@ -147,7 +167,7 @@ export class Tile {
 
   isDoubled(grid: Grid): boolean {
     const { up, down, left, right } = this.getSurroundingTiles(grid).exists;
-    return (up || down) && (left || right);
+    return (!!up || !!down) && (!!left || !!right);
   }
 }
 
