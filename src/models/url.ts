@@ -31,7 +31,7 @@ export const makeTileString = (mode: URLMode, tiles: Tile[]): string => {
 export const makeTilesFromTileString = (tiles: string): Tile[] => {
   const newTiles: Tile[] = [];
   let randomPlacement = false;
-  const tileArray = [...tiles.matchAll(/(\w)(\d*)/g)];
+  const tileArray = [...tiles.matchAll(/([A-Z])(\d*)/g)]; // TODO: either A-Z or .toUpperCase()
   tileArray.forEach((tile, i: number) => {
     const character = tile[1] as Alphabet;
     const [row, col] = convertGridIndexToCoordinates(tile[2])
