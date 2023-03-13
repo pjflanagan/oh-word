@@ -21,6 +21,8 @@ type TileElementProps = {
   verticalWordScore?: number;
 }
 
+
+// TODO: make a GridTile and a DockTile?
 export const TileElement: FC<TileElementProps> = ({
   tile,
   onClick,
@@ -57,7 +59,7 @@ export const TileElement: FC<TileElementProps> = ({
     });
   }
 
-  const displayValue = getDisplayValue(tile.getValue() * (isDoubled ? 2 : 1))
+  const displayValue = getDisplayValue(tile.getValue() * (isDoubled ? 2 : 1));
 
   return (
     <div

@@ -1,10 +1,11 @@
 import React, { FC } from 'react';
+import classNames from 'classnames';
 
 import { URLMode } from 'models';
 import { Button } from 'elements';
 
+import OhWordLogo from './ohwordlogo.png'
 import * as Style from './style.module.scss';
-import classNames from 'classnames';
 
 type HeaderProps = {
   copyURL: (copyType: URLMode) => void;
@@ -15,8 +16,8 @@ const Header: FC<HeaderProps> = ({
 }) => {
   return (
     <div className={Style.header}>
-      <div className={classNames(Style.title, Style.headerItem)}>
-        {'Oh Word!?'}
+      <div className={classNames(Style.logo, Style.headerItem)}>
+        <img src={OhWordLogo} />
       </div>
       <div className={classNames(Style.buttonHolder, Style.headerItem)}>
         <Button

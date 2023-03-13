@@ -43,11 +43,11 @@ const GridComponent: FC<GridComponentProps> = ({
       // filter the dock tile from tiles
       newTiles = newTiles.filter(t => t.getId() !== dockTile.getId());
       // make a newly placed tile and put it in the array
-      const newlyPlacedTile = dockTile.placeTile({ row, col });
+      const newlyPlacedTile = dockTile.placeTile({ row: row!, col: col! });
       newTiles = [...newTiles, newlyPlacedTile];
     }
     setTiles(newTiles);
-    setDockTileId(selectedTile.getId());
+    setDockTileId(selectedTile.getId()!);
   }
 
   return (
@@ -64,8 +64,8 @@ const GridComponent: FC<GridComponentProps> = ({
                         tile={tile}
                         onClick={() => replace(tile)}   // TODO: empty grid tile on hover display dockTile info
                         selectable={(tile.isEmpty() && dockTile.isSet()) || tile.isSet()}
-                        inCluster={score.clusterTileIds.includes(tile.getId())}
-                        isDoubled={tile.isDoubled(grid)}
+                        inCluster={tile.isInCluster(score.clusterTileIds)}
+                        isDoubled={tile.isDoubled(grid, score.clusterTileIds)}
                         horizontalWordScore={score.wordLengthScores.find(wls => wls.direction === 'horizontal' && wls.lastLetterTile === tile.getId())?.score}
                         verticalWordScore={score.wordLengthScores.find(wls => wls.direction === 'vertical' && wls.lastLetterTile === tile.getId())?.score}
                       />

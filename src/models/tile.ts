@@ -165,9 +165,13 @@ export class Tile {
     }
   }
 
-  isDoubled(grid: Grid): boolean {
+  isInCluster(clusterTileIds: number[]): boolean {
+    return clusterTileIds.includes(this.id!);
+  }
+
+  isDoubled(grid: Grid, clusterTileIds: number[]): boolean {
     const { up, down, left, right } = this.getSurroundingTiles(grid).exists;
-    return (!!up || !!down) && (!!left || !!right);
+    return (!!up || !!down) && (!!left || !!right) && this.isInCluster(clusterTileIds);
   }
 }
 

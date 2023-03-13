@@ -11,38 +11,17 @@
     transform: translateY(-100%);
     padding: 15px 0;
 
-    &.title {
-      font-size: 36px;
-      color: #9144c0;
-      font-family: 'Ranchers', sans-serif;
-      text-shadow: 1px 1px 0 #000;
-      -webkit-text-stroke: 3px #000;
-      padding-left: 15px;
+    &.logo {
+      padding: 0;
+
+      img {
+        height: 88px;
+      }
     }
 
     &.button-holder {
       display: flex;
       flex-direction: row-reverse;
-    }
-  }
-}
-
-@media only screen and (min-width: 383px) {
-  .header {
-    .header-item {
-      &.title {
-        font-size: 42px;
-      }
-    }
-  }
-}
-
-@media only screen and (min-width: 616px) {
-  .header {
-    .header-item {
-      &.title {
-        font-size: 52px;
-      }
     }
   }
 }
